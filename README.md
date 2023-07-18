@@ -2,9 +2,9 @@
 免费MES、开源MES，市面上最好的免费MES
 # DEMO：
 # 演示账号：
-# https://mesv2.cloudmes.io/ 
-# 账号：demo1   密码：111111   
-# 账号：demo2   密码：111111
+ https://mesv2.cloudmes.io/ 
+ 账号：demo1   密码：111111   
+ 账号：demo2   密码：111111
 
 # 联系我们：17898898894
 

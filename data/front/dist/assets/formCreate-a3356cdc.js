@@ -1,0 +1,1 @@
+const e=e=>JSON.stringify(e.value.getOption()),a=e=>{const a=e.value.getRule(),s=[];return a.forEach((e=>{s.push(JSON.stringify(e))})),s},s=e=>{const a=[];return e.forEach((e=>{a.push(JSON.parse(e))})),a},t=(e,a,t)=>{e.value.setOption(JSON.parse(a)),e.value.setRule(s(t))},u=(e,a,t,u)=>{e.value.option=JSON.parse(a),e.value.rule=s(t),u&&(e.value.value=u)};export{a,u as b,e,t as s};

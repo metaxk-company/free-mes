@@ -1,0 +1,1 @@
+import{h as o}from"./index-4bfb878d.js";function r(o){const r=Math.floor(o/864e5),t=Math.floor(o/36e5-24*r),f=Math.floor(o/6e4-24*r*60-60*t),a=Math.floor(o/1e3-24*r*60*60-60*t*60-60*f);return r>0?r+"天"+t+"小时"+f+"分钟":t>0?t+"小时"+f+"分钟":f>0?f+"分钟":a>0?a+"秒":"0秒"}const t=(r,t,f)=>{if(f)return o(f).format("YYYY-MM-DD HH:mm:ss")};export{t as d,r as f};

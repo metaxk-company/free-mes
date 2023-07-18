@@ -1,0 +1,105 @@
+version: "3"
+
+services:
+  db:
+    container_name: mes-db
+    image: mariadb:10.8
+    restart: always
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+      - ./data/db-vol:/var/lib/mysql
+      - ./data/sql/:/docker-entrypoint-initdb.d/
+    environment:
+      MYSQL_ROOT_PASSWORD: aa123456
+      MYSQL_USER: db_user
+      MYSQL_PASSWORD: db@123
+      MYSQL_DATABASE: mes-pro
+      MYSQL_BACKUP_PASSWORD: db@123
+      MYSQL_BACKUP_USER: backup_user
+    ports:
+      - 3306:3306
+    command: --default-authentication-plugin=mysql_native_password
+      --character-set-server=utf8mb4
+      --collation-server=utf8mb4_general_ci
+      --sql_mode=IGNORE_SPACE,NO_ENGINE_SUBSTITUTION
+      --lower_case_table_names=2
+      --max_connections=1000
+    networks:
+      - mes-network
+  redis:
+    image: "redis:alpine"
+    container_name: redis
+    restart: always
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+    ports:
+      - "6379:6379"
+    networks:
+      - mes-network
+    command: redis-server --port 6379 --requirepass 123456  --appendonly yes
+  minio:
+    image: minio/minio
+    container_name: minio
+    privileged: true
+    restart: always
+    ports:
+      - 9000:9000 # api 端口
+      - 9001:9001 # 控制台端口
+    environment:
+      TZ: Asia/Shanghai
+      LANG: en_US.UTF-8
+      MINIO_ROOT_USER: admin    #管理后台用户名
+      MINIO_ROOT_PASSWORD: admin111 #管理后台密码，最小8个字符
+    volumes:
+      - ./data/minio/data:/data               #映射当前目录下的data目录至容器内/data目录
+      - ./data/minio/config:/root/.minio/     #映射配置目录
+    command: server --console-address '0.0.0.0:9001' --address '0.0.0.0:9000' /data  #指定容器中的目录 /data
+    networks:
+      - mes-network 
+  server-api:
+  #需要修改镜像名称
+    container_name: metaxk-mes-server
+    build:
+      context: .
+    image: metaxk-mes-server
+    restart: unless-stopped
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+      #- ./data/server/java.security:/opt/java/openjdk/jre/lib/security/java.security
+    environment:
+      - TZ=Asia/Shanghai
+    ports:
+      - 48080:48080
+    depends_on:
+      - db
+      - redis
+      - minio
+    networks:
+      - mes-network
+  front:
+  #需要修改镜像名称
+    container_name: metaxk-mes-front
+    image: bitnami/nginx:latest
+    restart: always
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+      - ./data/front/conf/nginx.conf:/opt/bitnami/nginx/conf/nginx.conf
+      - ./data/front/conf/my_server_block.conf:/opt/bitnami/nginx/conf/server_blocks/my_server_block.conf
+      - ./data/front/dist:/app
+    environment:
+      - TZ=Asia/Shanghai
+    ports:
+      - 48081:8080
+    depends_on:
+      - server-api
+      - minio
+    networks:
+      - mes-network
+
+networks:
+  mes-network:
+      driver: bridge

@@ -1,0 +1,1 @@
+import{_ as e,o as n,c as s}from"./index-4bfb878d.js";const r=e({},[["render",function(e,r){return n(),s("span",null,"开发中")}],["__file","/Users/alex/Downloads/万界星空/产品研发/MES框架/dev/xiejinrun/new_open_mes_front/src/views/mp/menu/index.vue"]]);export{r as default};

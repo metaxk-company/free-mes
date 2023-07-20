@@ -1,8 +1,8 @@
-# free mes open source mes Manufacturing Execution System
+## free mes open source mes Manufacturing Execution System
 ### 免费MES、开源MES，市面上最好的免费MES
 
 ## 下载后执行 docker-compose up 即可
-## 完整代码包含前端、后端、数据大屏、报表系统，目前整理和完善代码，没定好开源计划
+## 完整代码包含前端、后端、数据大屏、报表系统
 
 ## DEMO：
 ## 演示账号：

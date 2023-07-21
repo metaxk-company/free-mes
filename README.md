@@ -11,6 +11,14 @@
 ### 账号：demo2   密码：111111
 
 ## 联系我们：17898898894
+## MES系统流程图
+<img width="1360" alt="image" src="./images/系统流程图.jpg">
+
+## MES功能架构图
+<img width="1360" alt="image" src="./images/MES功能架构图.jpg">
+
+## MES排产功能图
+<img width="1360" alt="image" src="./images/排产功能图.jpg">
 
 ## 排班日历
 <img width="1360" alt="image" src="./images/排班日历.png">
@@ -29,5 +37,11 @@
 
 ## 生产报工
 <img width="1389" alt="image" src="./images/生产报工.png">
+
+## 数据大屏1
+<img width="1360" alt="image" src="./images/数据大屏1.jpg">
+
+## 数据大屏2
+<img width="1360" alt="image" src="./images/数据大屏2.jpg">
 
 

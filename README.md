@@ -14,7 +14,9 @@ apt-get install docker-ce  -y
 sudo curl -L https://github.com/docker/compose/releases/download/v2.20.2/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose  
 sudo chmod +x /usr/local/bin/docker-compose
 ### 3、下载源码后，执行 docker-compose up
-### 4、访问：http://localhost:48081 默认用户名和密码：admin/admin123
+### 4、访问：http://localhost:48081  
+用户名：admin  
+密码：admin123
 
 ## 完整代码包含前端、后端、数据大屏、报表系统
 

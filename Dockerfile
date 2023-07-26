@@ -3,7 +3,8 @@ FROM eclipse-temurin:11-jre
 RUN mkdir -p /metaxk-mes-server
 WORKDIR /metaxk-mes-server
 ## 将后端项目的 Jar 文件，复制到镜像中
-COPY ./data/server/metaxk-server.jar app.jar
+# COPY ./data/server/metaxk-server.jar app.jar
+RUN wget https://metaxk.oss-cn-shanghai.aliyuncs.com/metaxk-server.jar -O app.jar
 
 ## 设置 TZ 时区
 ENV TZ=Asia/Shanghai

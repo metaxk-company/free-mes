@@ -40,7 +40,7 @@ services:
       - mes-network
     command: redis-server --port 6379 --requirepass 123456  --appendonly yes
   minio:
-    image: minio/minio
+    image: minio/minio:RELEASE.2022-06-25T15-50-16Z
     container_name: minio
     privileged: true
     restart: always
@@ -57,9 +57,9 @@ services:
       - ./data/minio/config:/root/.minio/     #映射配置目录
     command: server --console-address '0.0.0.0:9001' --address '0.0.0.0:9000' /data  #指定容器中的目录 /data
     networks:
-      - mes-network 
+      - mes-network
   server-api:
-  #需要修改镜像名称
+    #需要修改镜像名称
     container_name: metaxk-mes-server
     build:
       context: .
@@ -80,15 +80,15 @@ services:
     networks:
       - mes-network
   front:
-  #需要修改镜像名称
+    #需要修改镜像名称
     container_name: metaxk-mes-front
     image: bitnami/nginx:latest
     restart: always
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /etc/timezone:/etc/timezone:ro
-      - ./data/front/conf/nginx.conf:/opt/bitnami/nginx/conf/nginx.conf
-      - ./data/front/conf/my_server_block.conf:/opt/bitnami/nginx/conf/server_blocks/my_server_block.conf
+      - ./data/front/conf/nginx.conf:/opt/bitnami/nginx/conf/nginx.conf:rw
+      - ./data/front/conf/my_server_block.conf:/opt/bitnami/nginx/conf/server_blocks/my_server_block.conf:rw
       - ./data/front/dist:/app
     environment:
       - TZ=Asia/Shanghai
@@ -102,4 +102,4 @@ services:
 
 networks:
   mes-network:
-      driver: bridge
+    driver: bridge

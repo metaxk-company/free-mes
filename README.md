@@ -16,7 +16,7 @@ sudo chmod +x /usr/local/bin/docker-compose
 ### 3、下载源码后，执行 docker-compose up
 ### 4、访问：http://localhost:48081  
 用户名：admin  
-密码：admin123
+密码：admin123或者111111
 
 ## 完整代码包含前端、后端、数据大屏、报表系统
 

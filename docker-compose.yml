@@ -58,7 +58,7 @@ services:
     command: server --console-address '0.0.0.0:9001' --address '0.0.0.0:9000' /data  #指定容器中的目录 /data
     networks:
       - mes-network
-  server-api:
+  mes-server-api:
     #需要修改镜像名称
     container_name: metaxk-mes-server
     build:

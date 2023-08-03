@@ -95,7 +95,7 @@ services:
     ports:
       - 48081:8080
     depends_on:
-      - server-api
+      - mes-server-api
       - minio
     networks:
       - mes-network

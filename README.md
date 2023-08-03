@@ -2,6 +2,7 @@
 ### 免费MES、开源MES，市面上最好的免费MES
 ### 技术架构：Springboot2+ VUE3 + Mysql8 + Redis + Minio，也有SpringCloud版本
 ### 免费不易，努力坚持！记得 Star，不要白嫖~
+
 ### 建议安装在Ubuntu Server 22.04服务器上面
 ### 下载 https://releases.ubuntu.com/22.04.2/ubuntu-22.04.2-live-server-amd64.iso
 

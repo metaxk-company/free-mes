@@ -4,7 +4,6 @@
 ### 免费不易，努力坚持！记得 Star，不要白嫖~
 
 ### 建议安装在Ubuntu Server 22.04服务器上面
-### 下载 https://releases.ubuntu.com/22.04.2/ubuntu-22.04.2-live-server-amd64.iso
 
 ### 执行步骤：
 ### 1、安装docker

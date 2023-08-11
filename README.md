@@ -1,5 +1,5 @@
 ### free mes open source mes Manufacturing Execution System
-### 市面上最好的免费MES，开源MES即将发布
+### 市面上最好的免费MES，没有任何限制，开源MES即将发布
 ### 技术架构：Springboot2+ VUE3 + Mysql8 + Redis + Minio，也有SpringCloud版本
 ### 免费不易，努力坚持！记得 Star，不要白嫖~
 

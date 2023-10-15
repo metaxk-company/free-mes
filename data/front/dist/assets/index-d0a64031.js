@@ -1,1 +1,0 @@
-import{r as a}from"./index-4bfb878d.js";const i=async i=>await a.get({url:"/admin-api/bpm/process-definition/get-bpmn-xml?id="+i}),s=async i=>await a.get({url:"/admin-api/bpm/process-definition/page",params:i}),n=async i=>await a.get({url:"/admin-api/bpm/process-definition/list",params:i});export{i as a,n as b,s as g};

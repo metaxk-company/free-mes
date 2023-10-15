@@ -17,16 +17,16 @@ sudo curl -L https://github.com/docker/compose/releases/download/v2.20.2/docker-
 sudo chmod +x /usr/local/bin/docker-compose
 ### 3、下载源码后，执行 docker-compose up
 ### 4、访问：http://localhost:48081  
-用户名：admin  
-密码：admin123或者111111
+用户名：metaxk  
+密码：111111
 
 ## 完整代码包含前端、后端、数据大屏、报表系统
 
 ## DEMO：
 ## 演示账号：
  https://mesv2.cloudmes.io/ 
-### 账号：demo1   密码：111111   
-### 账号：demo2   密码：111111
+### 账号：test001   密码：111111   
+### 账号：test002   密码：111111
 
 ## 联系我们：17898898894
 ## MES系统流程图

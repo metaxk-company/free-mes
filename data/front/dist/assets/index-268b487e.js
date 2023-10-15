@@ -1,1 +1,0 @@
-import{_ as e,o as n,c as s}from"./index-4bfb878d.js";const r=e({},[["render",function(e,r){return n(),s("div",null,"index")}],["__file","/Users/alex/Downloads/万界星空/产品研发/MES框架/dev/xiejinrun/new_open_mes_front/src/views/infra/testDemo/index.vue"]]);export{r as default};

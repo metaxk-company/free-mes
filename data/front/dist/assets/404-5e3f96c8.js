@@ -1,1 +1,0 @@
-import{_ as r}from"./Error-d0d70607.js";import{d as s,u as e,o,G as n,a,_ as t}from"./index-4bfb878d.js";const _=t(s({__name:"404",setup(s){const{push:t}=e();return(s,e)=>{const _=r;return o(),n(_,{onErrorClick:e[0]||(e[0]=r=>a(t)("/"))})}}}),[["__file","/Users/alex/Downloads/万界星空/产品研发/MES框架/dev/xiejinrun/new_open_mes_front/src/views/error/404.vue"]]);export{_ as default};

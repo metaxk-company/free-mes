@@ -25,8 +25,8 @@ sudo chmod +x /usr/local/bin/docker-compose
 ## DEMO：
 ## 演示账号：
  https://mesv2.cloudmes.io/ 
-### 账号：test001   密码：111111   
-### 账号：test002   密码：111111
+### 账号：test001   密码：123456   
+### 账号：test002   密码：123456
 
 ## 联系我们：17898898894
 ## MES系统流程图

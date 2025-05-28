@@ -1,0 +1,60 @@
+// .text-color {
+//   color: var(--el-text-color-regular);
+// }
+// .dark .dark\:text-color {
+//   color: rgba(255, 255, 255, var(--dark-text-color));
+// }
+
+.common-card {
+  padding: 32px;
+  background: #ffffff;
+  border-radius: 16px;
+  margin-bottom: 16px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+
+  .common-search {
+    font-family: 'PingFang SC';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    color: rgba(0, 0, 0, 0.65);
+  }
+
+  .common-card-table {
+    margin-top: 24px;
+  }
+
+  &-title-box {
+    display: flex;
+    justify-content: space-between;
+    padding-bottom: 24px;
+  }
+
+  &__title {
+    font-size: $font-20;
+    font-weight: 400;
+    line-height: 28px;
+
+    &-sub {
+      padding-bottom: 8px;
+      font-size: $font-14;
+      color: $font-black-9;
+      font-weight: 400;
+    }
+  }
+}
+
+.vxe-grid--form-wrapper {
+  .vxe-form--item-title {
+    width: 80px;
+  }
+}
+
+.el-button > i {
+  font-size: 20px;
+}
+
+// 控制多个按钮之间的间距
+.el-button + .el-button {
+  margin-left: 6px !important;
+}

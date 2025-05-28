@@ -1,0 +1,35 @@
+@import './var.css';
+@import './vxe.css';
+@import 'element-plus/theme-chalk/dark/css-vars.css';
+@import 'common.scss';
+@import './gantt_material.css';
+
+.reset-margin [class*='el-icon'] + span {
+  margin-left: 2px !important;
+}
+
+// 解决抽屉弹出时，body宽度变化的问题
+.el-popup-parent--hidden {
+  width: 100% !important;
+}
+
+// 表格在没有数据的情况下，显示--：
+.el-table tbody td .cell:empty::after {
+  content: '--';
+}
+
+/* nprogress 适配 element-plus 的主题色 */
+#nprogress {
+  & .bar {
+    background-color: var(--el-color-primary) !important;
+  }
+
+  & .peg {
+    box-shadow: 0 0 10px var(--el-color-primary), 0 0 5px var(--el-color-primary) !important;
+  }
+
+  & .spinner-icon {
+    border-top-color: var(--el-color-primary);
+    border-left-color: var(--el-color-primary);
+  }
+}

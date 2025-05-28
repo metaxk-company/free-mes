@@ -1,0 +1,50 @@
+// 命名空间
+$namespace: v;
+// el命名空间
+$elNamespace: el;
+// vxe命名空间
+$vxeNamespace: vxe;
+
+$bg-light-blue: #e8effb;
+$bg-dark-blue: #155bd4;
+$theme-color: #155bd4;
+
+$bg-white: #ffffff;
+$bg-deep-gray: #4b4b4b;
+$bg-dark: #21253e;
+$bg-light-gray: #f0f2f5;
+
+$font-family-pf-sc: 'PingFang SC';
+// 字体颜色
+$font-black: #31373d;
+$font-white: #ffffff;
+$font-white-85: rgba(255, 255, 255, 0.85);
+$font-dark-blue: #155bd4;
+$font-black-9: rgba(0, 0, 0, 0.9);
+$font-black-85: rgba(0, 0, 0, 0.85);
+$font-black-65: rgba(0, 0, 0, 0.65);
+$font-black-45: rgba(0, 0, 0, 0.45);
+$font-black-4: rgba(0, 0, 0, 0.4);
+
+// 字体大小
+$font-12: 12px;
+$font-14: 14px;
+$font-16: 16px;
+$font-20: 20px;
+
+// 圆角
+$border-radius-3: 3px;
+$border-radius-4: 4px;
+
+// 阴影
+$box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.1);
+
+$min-width-content: 704px;
+$min-width-main: 768px;
+$header-height: 48px;
+
+:export {
+  menuBg: $bg-dark;
+  menuText: $font-white-85;
+  menuActiveText: $font-white-85;
+}

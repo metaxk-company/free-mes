@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.metaxk.module.mes.dal.mysql.order.InboundMapper">
+
+    <resultMap type="io.metaxk.module.mes.controller.admin.order.vo.InboundVo" id="InboundVoResult">
+        <result property="inNumber"    column="in_number"    />
+        <result property="wareHouse"    column="ware_house"    />
+        <result property="deliveryDate"    column="delivery_date"    />
+        <result property="status"    column="status"    />
+        <result property="itemCode"    column="item_code"    />
+        <result property="itemName"    column="item_name"    />
+        <result property="model"    column="model"    />
+        <result property="spec"    column="spec"    />
+        <result property="boxNumber"    column="box_number"    />
+        <result property="vendor"    column="vendor"    />
+        <result property="batchNumber"    column="batch_number"    />
+        <result property="quantity"    column="quantity"    />
+        <result property="purchasePrice"    column="purchase_price"    />
+        <result property="barcode"    column="barcode"    />
+        <result property="unitOfMeasure"    column="unit_of_measure"    />
+        <result property="totalPrice"    column="total_price"    />
+        <result property="kind"    column="kind"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+
+    <select id="inBoundPrint" resultMap="InboundVoResult">
+        select wh.in_number ,wh.ware_house,wh.delivery_date,wh.status,
+               it.item_code,it.item_name,it.model,it.spec,it.box_number,it.vendor,it.batch_number,it.quantity,it.purchase_price,it.barcode,
+               it.unit_of_measure,it.total_price,it.kind,it.remark
+        from wh_po_inbound  wh left join wh_po_inbound_item it   on wh.in_number = it.in_number where  wh.in_number = #{number}
+    </select>
+
+
+
+</mapper>

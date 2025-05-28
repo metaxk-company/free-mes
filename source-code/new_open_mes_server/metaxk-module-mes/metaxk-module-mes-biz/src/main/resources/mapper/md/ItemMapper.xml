@@ -1,0 +1,37 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="io.metaxk.module.mes.dal.mysql.md.ItemMapper">
+
+
+
+    <insert id="insertBatchs">
+        insert into md_item (
+        item_code ,
+        item_name ,
+        specification ,
+        unit_of_measure ,
+        item_type_code,
+        item_type_name,
+        item_or_product
+        ) values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+            #{item.itemCode} ,
+            #{item.itemName} ,
+            #{item.specification} ,
+            #{item.unitOfMeasure} ,
+            #{item.itemTypeCode},
+            #{item.itemTypeName},
+            #{item.itemOrProduct}
+            )
+        </foreach>
+    </insert>
+
+
+
+
+
+
+
+</mapper>

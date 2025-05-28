@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.metaxk.module.mes.dal.mysql.order.OutboundItemLabelMapper">
+
+    <resultMap type="OutboundItemLabel" id="OutboundItemLabelResult">
+        <result property="id"    column="id"    />
+        <result property="labelId"    column="labelId"    />
+
+    </resultMap>
+
+
+    <select id="findOutboundItemLabelList" resultMap="OutboundItemLabelResult">
+         SELECT l.id,l.label_id FROM order_outbound_item_label l
+            LEFT JOIN order_outbound_item i ON i.number = l.item_number
+            LEFT JOIN order_outbound o ON o.number= i.outbound_number
+        WHERE o.id = #{id}
+    </select>
+
+
+
+</mapper>

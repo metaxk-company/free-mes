@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.metaxk.module.mes.dal.mysql.order.OutboundMapper">
+
+    <resultMap type="io.metaxk.module.mes.controller.admin.order.vo.OutBoundVo" id="OutBoundVoResult">
+        <result property="modelAndSpec"    column="modelAndSpec"    />
+        <result property="salesQuantity"    column="salesQuantity"    />
+    </resultMap>
+
+
+
+    <resultMap type="io.metaxk.module.mes.controller.admin.order.vo.OutBoundSaleItemResVO" id="OutBoundSaleItemResVOResult">
+        <result property="model"    column="model"    />
+        <result property="spec"    column="spec"    />
+        <result property="lineType"    column="line_type"    />
+        <result property="customerCode"    column="customer_code"    />
+        <result property="customerName"    column="customer_name"    />
+        <result property="color"    column="color"    />
+        <result property="panhao"    column="panhao"    />
+        <result property="price"    column="price"    />
+        <result property="totalPrice"    column="total_price"    />
+        <result property="quantity"    column="quantity"    />
+        <result property="stocks"    column="stocks"    />
+        <result property="unit"    column="unit"    />
+        <result property="remark"    column="remark"    />
+        <result property="itemCode"    column="product_number"    />
+        <result property="weight"    column="weight"    />
+        <result property="totalTareWeight"    column="total_tare"    />
+        <result property="sendOut"    column="send_out"    />
+        <result property="noSend"    column="no_send"    />
+        <result property="saleItemNumber"    column="sale_item_number"    />
+    </resultMap>
+
+
+
+
+    <resultMap type="io.metaxk.module.mes.controller.admin.order.vo.PrintDataVo" id="PrintDataVoResult">
+        <result property="deliveryDate"    column="delivery_date"    />
+        <result property="number"    column="number"    />
+        <result property="customerName"    column="customer_name"    />
+        <result property="remark"    column="remark"    />
+        <result property="model"    column="model"    />
+        <result property="spec"    column="spec"    />
+        <result property="pieces"    column="pieces"    />
+        <result property="total"    column="total"    />
+        <result property="withFax"    column="with_fax"    />
+        <result property="salePrice"    column="sale_price"    />
+        <result property="tareWeight"    column="tare_weight"    />
+        <result property="totalTare"    column="total_tare"    />
+        <result property="withoutFax"    column="withoutFax"    />
+        <result property="warrantNumber"    column="warrant_number"    />
+    </resultMap>
+
+
+
+
+    <select id="findOutBoundList" resultMap="OutBoundVoResult">
+        SELECT
+            CASE
+                WHEN ot.customer_code IS NULL OR ot.customer_code = '' THEN
+                    CONCAT(ot.line_type, '#', ot.model,'#',ot.spec,'#',ot.panhao,'#',ot.color,'#',ot.item_code,'#',ot.number,'#')
+                ELSE
+                    CONCAT(ot.line_type, '#', ot.model,'#',ot.spec,'#',ot.panhao,'#',ot.color,'#',ot.customer_code, '#',ot.item_code,'#',ot.number,'#')
+                END as modelAndSpec
+        FROM order_outbound as od
+                 LEFT JOIN order_outbound_item as ot ON od.number = ot.outbound_number
+        WHERE od.number = #{number} AND ot.status = '未完成'
+    </select>
+
+
+
+
+    <select id="findOutBoundQuantityList" resultMap="OutBoundVoResult">
+             SELECT
+             CONCAT('已发:', ot.send_out,' (kg)',' |',' 件数:', ot.pieces,' (件) ',' | ','未发:',
+                 CASE
+                 WHEN sa.price_model = 'pieces' THEN CONCAT(ot.quantity - ot.pieces, ' (件)')
+                 ELSE CONCAT(ot.no_send, '(', ot.unit, ')')
+                 END
+              ) as salesQuantity
+               FROM order_outbound as od
+               LEFT JOIN order_outbound_item as ot ON od.number = ot.outbound_number
+               LEFT JOIN order_sale sa ON sa.number = ot.sale_number
+        where ot.model = #{model} and   ot.spec = #{spec} and ot.line_type = #{lineType}  and ot.item_code = #{itemCode} and ot.number = #{otmNumber}
+    </select>
+
+
+
+
+
+
+    <select id="findSaleItemByNum" parameterType="string"  resultMap="OutBoundSaleItemResVOResult">
+        SELECT si.*,os.customer_name,sum(CONVERT(ouil.total_height,DECIMAL)) as weight,sum(CONVERT(ouil.total_tare,DECIMAL)) as out_total_tare,
+               COALESCE(SUM(CONVERT(ouil.total_height, DECIMAL)), 0) AS send_out,
+               SUM(CONVERT(si.quantity, DECIMAL)) - COALESCE(SUM(CONVERT(ouil.total_height, DECIMAL)), 0) AS no_send
+        FROM order_sale os
+                 LEFT JOIN order_sale_item si ON os.number=si.sale_number
+                 LEFT JOIN order_outbound ou ON os.number=ou.sale_number
+                 LEFT JOIN order_outbound_item oui ON ou.number=oui.outbound_number
+                 LEFT JOIN order_outbound_item_label ouil ON oui.number=ouil.sale_item_number
+        WHERE os.number= #{saleNumber}   AND si.status = '未完成'
+        <choose>
+            <when test="lineType != null and lineType != ''">
+                AND si.line_type = #{lineType}
+            </when>
+            <when test="spec != null and spec != ''">
+                AND si.spec = #{spec}
+            </when>
+            <when test="model != null and model != ''">
+                AND si.model = #{model}
+            </when>
+            <when test="customerNumber != null and customerNumber != ''">
+                AND os.customer_number = #{customerNumber}
+            </when>
+        </choose>
+        GROUP BY si.model,si.spec,si.line_type,si.color
+    </select>
+
+
+
+
+    <select id="printDataInclTax" parameterType="string"  resultMap="PrintDataVoResult">
+        SELECT ot.delivery_date,
+               ot.number,
+               ot.customer_name,
+               ot.remark ,
+               CONCAT(it.line_type, '#', it.model) AS model ,
+               it.spec,
+               ot.pieces,
+               ot.total,
+               sa.with_fax ,
+               ot.sale_price,
+               it.tare_weight,
+               it.total_tare
+        FROM   order_outbound ot  LEFT JOIN order_outbound_item it ON ot.number = it.outbound_number
+       left  join   order_sale_item st   on it.sale_item_number = st.sale_item_number
+       left   join   order_sale   sa   on   sa.sale_number = st.sale_number
+        where  ot.number = #{number}
+        GROUP BY it.model,it.spec,it.line_type
+    </select>
+
+
+
+
+
+    <select id="printDataNoInclTax" parameterType="string"  resultMap="PrintDataVoResult">
+        SELECT ot.delivery_date,ot.number,ot.customer_name,  CONCAT(it.line_type, '#', it.model) AS model ,
+               it.spec,   sa.without_fax ,ot.remark ,sa.total
+        FROM   order_outbound ot
+           LEFT JOIN   order_outbound_item it ON ot.number = it.outbound_number
+           LEFT JOIN   order_sale_item st   on it.sale_item_number = st.sale_item_number
+           LEFT JOIN   order_sale   sa   on   sa.sale_number = st.sale_number
+        where  ot.number = #{outBoundNumber}
+        GROUP BY it.model,it.spec,it.line_type
+    </select>
+
+
+
+
+    <select id="printDataNoPrice" parameterType="string"  resultMap="PrintDataVoResult">
+        SELECT ot.delivery_date,ot.number,ot.customer_name,  CONCAT(it.line_type, '#', it.model) AS model ,
+               it.spec, ot.remark ,sa.total
+        FROM   order_outbound ot
+           LEFT JOIN   order_outbound_item it ON ot.number = it.outbound_number
+           LEFT JOIN   order_sale_item st   on it.sale_item_number = st.sale_item_number
+           LEFT JOIN   order_sale   sa   on   sa.sale_number = st.sale_number
+        where  ot.number = #{outBoundNumber}
+        GROUP BY it.model,it.spec,it.line_type
+    </select>
+
+
+
+
+    <select id="printDataInstruct" parameterType="string"  resultMap="PrintDataVoResult">
+        SELECT ot.delivery_date,ot.number,ot.customer_name,  CONCAT(it.line_type, '#', it.model) AS model ,
+           it.spec,ot.remark ,sa.total,st.warrant_number
+        FROM order_outbound ot
+          LEFT JOIN   order_outbound_item it ON ot.number = it.outbound_number
+          LEFT JOIN   order_sale_item st   on it.sale_item_number = st.sale_item_number
+          LEFT JOIN   order_sale   sa   on   sa.sale_number = st.sale_number
+        where  ot.number = #{outBoundNumber}
+        GROUP BY it.model,it.spec,it.line_type
+    </select>
+
+
+
+
+
+    <select id="printDataPoundScale" parameterType="string"  resultMap="PrintDataVoResult">
+        SELECT ot.delivery_date,ot.number,ot.customer_name,  CONCAT(it.line_type, '#', it.model) AS model ,
+               it.spec,   sa.with_fax , sa.without_fax,ot.remark ,sa.total
+        FROM   order_outbound ot
+                   LEFT JOIN   order_outbound_item it ON ot.number = it.outbound_number
+                   LEFT JOIN   order_sale_item st   on it.sale_item_number = st.sale_item_number
+                   LEFT JOIN   order_sale   sa   on   sa.sale_number = st.sale_number
+        where  ot.number = #{outBoundNumber}
+        GROUP BY it.model,it.spec,it.line_type
+    </select>
+
+
+
+
+    <select id="findSaleItemAll" parameterType="string"  resultMap="OutBoundSaleItemResVOResult">
+        SELECT
+        si.*,
+        SUM(CONVERT(ouil.total_height, DECIMAL)) AS weight,
+        SUM(CONVERT(ouil.total_tare, DECIMAL)) AS out_total_tare,
+        os.customer_name,
+        (CASE
+        WHEN SUM(CONVERT(ouil.total_height, DECIMAL)) = '' OR SUM(CONVERT(ouil.total_height, DECIMAL)) IS NULL THEN 0
+        ELSE SUM(CONVERT(ouil.total_height, DECIMAL))
+        END) AS send_out,
+        SUM(CONVERT(si.quantity, DECIMAL)) -
+        (CASE
+        WHEN SUM(CONVERT(ouil.total_height, DECIMAL)) = '' OR SUM(CONVERT(ouil.total_height, DECIMAL)) IS NULL THEN 0
+        ELSE SUM(CONVERT(ouil.total_height, DECIMAL))
+        END) AS no_send
+        FROM
+        order_sale os
+        LEFT JOIN order_sale_item si ON os.number = si.sale_number
+        LEFT JOIN order_outbound ou ON os.number = ou.sale_number
+        LEFT JOIN order_outbound_item oui ON ou.number = oui.outbound_number
+        LEFT JOIN order_outbound_item_label ouil ON oui.number = ouil.sale_item_number
+        WHERE
+        si.status = '未完成'
+        <if test="lineType != null and lineType != ''"> AND si.line_type LIKE CONCAT('%', #{lineType}, '%')</if>
+        <if test="model != null and model != ''"> AND si.model LIKE CONCAT('%', #{model}, '%')</if>
+        <if test="spec != null and spec != ''"> AND si.spec LIKE CONCAT('%', #{spec}, '%')</if>
+        <if test="customerNumber != null and customerNumber != ''"> AND os.customer_number LIKE CONCAT('%', #{customerNumber}, '%')</if>
+        <if test="saleNumber != null and saleNumber != ''"> AND si.sale_number LIKE CONCAT('%', #{saleNumber}, '%')</if>
+        GROUP BY si.model,si.spec,si.line_type,si.color
+    </select>
+
+
+
+</mapper>

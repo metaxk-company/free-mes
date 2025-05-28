@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.metaxk.module.mes.dal.mysql.wh.InboundRecBillItemMapper">
+
+    <resultMap type="io.metaxk.module.mes.controller.admin.wh.vo.InboundRecBillItemVo" id="InboundRecBillItemVoResult">
+        <result property="id"    column="id"    />
+        <result property="amount"    column="amount"    />
+    </resultMap>
+
+
+    <select id="findInboundRecBillItem" resultMap="InboundRecBillItemVoResult">
+        SELECT i.id AS id,i.quantity AS amount FROM wh_inbound_rec_bill_item i
+            LEFT JOIN wh_inbound_rec_bill b ON b.number = i.rec_number
+        WHERE b.receipt_number = #{receiptNumber}
+    </select>
+
+
+
+</mapper>

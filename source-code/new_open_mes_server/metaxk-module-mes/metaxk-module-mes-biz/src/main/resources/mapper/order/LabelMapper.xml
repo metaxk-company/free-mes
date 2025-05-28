@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.metaxk.module.mes.dal.mysql.order.LabelMapper">
+
+    <resultMap type="io.metaxk.module.mes.dal.dataobject.order.OutboundRecord" id="OutboundRecordResult">
+        <result property="saleQuantity"    column="sales_quantity"    />
+        <result property="modelAndSpec"    column="model_and_spec"    />
+    </resultMap>
+
+
+    <select id="countRepackage" resultMap="OutboundRecordResult">
+        select CONCAT('已发:',SUM(wh_label.total_height),' (kg)','  件数:',COUNT(*)) as sales_quantity  ,
+               CONCAT(wh_label.line_type, '#', wh_label.model,'#',wh_label.spec,'#',wh_label.color,'#') as  model_and_spec
+        from  wh_label    where `status` = '3'
+    </select>
+
+
+
+</mapper>

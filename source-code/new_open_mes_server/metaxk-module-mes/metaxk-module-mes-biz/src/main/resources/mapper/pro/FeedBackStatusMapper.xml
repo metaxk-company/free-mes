@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.metaxk.module.mes.dal.mysql.pro.FeedBackStatusMapper">
+
+    <resultMap id="equationTimeVoResult" type="io.metaxk.module.mes.controller.admin.pro.vo.EquationTimeVo">
+        <result property="timeDiff" column="time_diff"/>
+    </resultMap>
+
+    <select id="matrixingTime" parameterType="String" resultMap="equationTimeVoResult">
+        SELECT CONCAT(
+                       FLOOR(TIMESTAMPDIFF(SECOND, MIN(time), MAX(time)) / 86400), '天 ',
+                       FLOOR((TIMESTAMPDIFF(SECOND, MIN(time), MAX(time)) % 86400) / 3600), '小时 ',
+                       ROUND((TIMESTAMPDIFF(SECOND, MIN(time), MAX(time)) % 3600) / 60), '分钟 '
+                   ) AS time_diff FROM pro_feedback_status
+        where task_code = #{taskCode}
+    </select>
+
+
+</mapper>

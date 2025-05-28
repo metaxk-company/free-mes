@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.metaxk.module.mes.dal.mysql.pro.WorkStationMapper">
+
+
+    <resultMap type="io.metaxk.module.mes.controller.admin.pro.vo.WorkstationMachVo" id="WorkstationMachVoResult">
+        <result property="workstationId"    column="workstation_id"    />
+        <result property="workstationCode"    column="workstation_code"    />
+        <result property="workstationName"    column="workstation_name"    />
+        <result property="workstationAddress"    column="workstation_address"    />
+        <result property="workshopId"    column="workshop_id"    />
+        <result property="workshopCode"    column="workshop_code"    />
+        <result property="workshopName"    column="workshop_name"    />
+        <result property="processId"    column="process_id"    />
+        <result property="processCode"    column="process_code"    />
+        <result property="processName"    column="process_name"    />
+        <result property="machineryId"    column="machinery_id"    />
+        <result property="machineryCode"    column="machinery_code"    />
+        <result property="machineryName"    column="machinery_name"    />
+    </resultMap>
+
+
+
+    <sql id="listByConditionalVO">
+        select * from md_workstation
+          left join  md_workstation_machine on md_workstation.id = md_workstation_machine.workstation_id
+          left join dv_machinery  on md_workstation_machine.machinery_code = dv_machinery.machinery_code
+    </sql>
+
+
+    <!--设备携带工作站-->
+    <select id="selectWorkstationByCode"  resultMap="WorkstationMachVoResult">
+--         select *
+--         from 	md_workstation  left join 	md_workstation_machine
+--         on md_workstation.md_workstation_id = md_workstation_machine.workstation_id
+--         left join  dv_machinery  on md_workstation_machine.machinery_code = dv_machinery.machinery_code
+
+        <include refid="listByConditionalVO"/>
+    </select>
+
+</mapper>

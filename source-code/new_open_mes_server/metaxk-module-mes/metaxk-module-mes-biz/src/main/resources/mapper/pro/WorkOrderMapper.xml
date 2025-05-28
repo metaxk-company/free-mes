@@ -1,0 +1,89 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="io.metaxk.module.mes.dal.mysql.pro.WorkOrderMapper">
+
+    <resultMap type="io.metaxk.module.mes.controller.admin.pro.vo.ProWorkorderVo" id="ProWorkorderOrdersResult">
+        <result property="workorderCode"    column="workorder_code"    />
+        <result property="workorderName"    column="workorder_name"    />
+        <result property="productCode"    column="product_code"    />
+        <result property="productName"    column="product_name"    />
+        <result property="requestDate"    column="request_date"    />
+        <result property="startTime"    column="start_time"    />
+    </resultMap>
+
+
+
+
+    <resultMap type="io.metaxk.module.mes.dal.dataobject.pro.WorkOrder" id="WorkOrderResult">
+        <result property="id"    column="id"    />
+        <result property="workorderCode"    column="workorder_code"    />
+        <result property="workorderName"    column="workorder_name"    />
+        <result property="orderSource"    column="order_source"    />
+        <result property="sourceCode"    column="source_code"    />
+        <result property="productId"    column="product_id"    />
+        <result property="productCode"    column="product_code"    />
+        <result property="productName"    column="product_name"    />
+        <result property="productSpc"    column="product_spc"    />
+        <result property="unitOfMeasure"    column="unit_of_measure"    />
+        <result property="quantity"    column="quantity"    />
+        <result property="quantityProduced"    column="quantity_produced"    />
+        <result property="quantityChanged"    column="quantity_changed"    />
+        <result property="quantityScheduled"    column="quantity_scheduled"    />
+        <result property="clientId"    column="client_id"    />
+        <result property="clientCode"    column="client_code"    />
+        <result property="clientName"    column="client_name"    />
+        <result property="batchCode"    column="batch_code"    />
+        <result property="requestDate"    column="request_date"    />
+        <result property="orderDate"    column="order_date"    />
+        <result property="produceDate"    column="produce_date"    />
+        <result property="parentId"    column="parent_id"    />
+        <result property="ancestors"    column="ancestors"    />
+        <result property="status"    column="status"    />
+        <result property="remark"    column="remark"    />
+        <result property="startTime"    column="start_time"    />
+        <result property="orderCategory"    column="order_category"    />
+        <result property="categoryDescription"    column="category_description"    />
+        <result property="dstatus"    column="dstatus"    />
+        <result property="operationTime"    column="operation_time"    />
+        <result property="completionTime"    column="completion_time"    />
+        <result property="measurement"    column="measurement"    />
+        <result property="productionDepartment"    column="production_department"    />
+        <result property="departmentName"    column="department_name"    />
+        <result property="lineNumber"    column="line_number"    />
+        <result property="itemCode"    column="item_code"    />
+        <result property="itemName"    column="item_name"    />
+        <result property="versionNumber"    column="version_number"    />
+        <result property="massQuantity"    column="mass_quantity"    />
+        <result property="attr1"    column="attr1"    />
+        <result property="produceProgress"    column="produce_progress"    />
+        <result property="productionSchedule"    column="production_schedule"    />
+        <result property="schedulingType"    column="scheduling_type"    />
+    </resultMap>
+
+
+
+
+
+    <select id="synchronizeOrders"  parameterType="io.metaxk.module.mes.controller.admin.pro.vo.ProWorkorderVo" resultMap="ProWorkorderOrdersResult">
+        select workorder_code,workorder_name,product_code,product_name,start_time,request_date from pro_workorder
+        <where>
+            <if test="workorderCode != ''"> and workorder_code = #{workorderCode}</if>
+            <if test="startTime != ''"> and date_format(start_time,'%y%m%d') = date_format(#{startTime},'%y%m%d')</if>
+            <if test="requestDate != ''"> and date_format(request_date,'%y%m%d') = date_format(#{requestDate},'%y%m%d')</if>
+            <if test="productName != ''"> and product_name like concat('%', #{productName}, '%')</if>
+            <if test="workorderName != ''"> and workorder_name like concat('%', #{workorderName}, '%')</if>
+        </where>
+    </select>
+
+
+
+    <select id="synchronizeOrdersList"  resultMap="ProWorkorderOrdersResult">
+        select workorder_code,workorder_name,product_code,product_name,start_time,request_date from pro_workorder
+    </select>
+
+
+
+
+
+</mapper>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.metaxk.module.mes.dal.mysql.qc.OtherRecordResultMapper">
+
+    <resultMap type="io.metaxk.module.mes.controller.admin.qc.vo.OtherStandardResultVo" id="OtherStandardResults">
+        <result property="model"    column="model"    />
+        <result property="spec"    column="sepc"    />
+        <result property="lineType"    column="lineType"    />
+        <result property="num"    column="num"    />
+    </resultMap>
+
+    <select id="getAcount" resultMap="OtherStandardResults">
+        select q.model as model,q.spec as sepc,q.lineType as lineType,q.num as num from
+        (select model,spec,line_type as lineType,sum(status) as num from qc_other_standard_result where status = #{status}
+        GROUP BY model,spec,line_type) q
+        where
+        <if test="model !=null and model != ''"> model = #{model} </if>
+        <if test="spec !=null and spec != ''"> and spec = #{spec}</if>
+        <if test="lineType !=null and lineType != ''"> and line_type = #{lineType} </if>
+
+    </select>
+
+</mapper>

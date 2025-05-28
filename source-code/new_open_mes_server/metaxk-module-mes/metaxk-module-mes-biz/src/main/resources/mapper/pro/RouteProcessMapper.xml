@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.metaxk.module.mes.dal.mysql.pro.RouteProcessMapper">
+
+    <resultMap type="io.metaxk.module.mes.dal.dataobject.pro.RouteProcess" id="ProRouteProcessResult">
+        <result property="id"    column="id"    />
+        <result property="routeId"    column="route_id"    />
+        <result property="processId"    column="process_id"    />
+        <result property="processCode"    column="process_code"    />
+        <result property="processName"    column="process_name"    />
+        <result property="orderNum"    column="order_num"    />
+        <result property="nextProcessId"    column="next_process_id"    />
+        <result property="nextProcessCode"    column="next_process_code"    />
+        <result property="nextProcessName"    column="next_process_name"    />
+        <result property="linkType"    column="link_type"    />
+        <result property="defaultPreTime"    column="default_pre_time"    />
+        <result property="defaultSufTime"    column="default_suf_time"    />
+        <result property="colorCode"    column="color_code"    />
+        <result property="keyFlag" column="key_flag" ></result>
+        <result property="remark"    column="remark"    />
+        <result property="attr1"    column="attr1"    />
+        <result property="attr2"    column="attr2"    />
+        <result property="attr3"    column="attr3"    />
+        <result property="attr4"    column="attr4"    />
+    </resultMap>
+
+    <sql id="selectProRouteProcessVo">
+   select id, route_id, process_id, process_code, process_name, order_num, next_process_id, next_process_code, next_process_name, link_type, default_pre_time, default_suf_time, color_code,key_flag, remark, attr1, attr2, attr3, attr4, creator, create_time, updater, update_time from pro_route_process
+    </sql>
+
+
+
+
+
+    <select id="findPreProcess"  resultMap="ProRouteProcessResult">
+        <include refid="selectProRouteProcessVo"/>
+        where route_id = #{routeId}
+        <choose>
+            <when test="orderNum != null "> and order_num &lt; #{orderNum}</when>
+            <otherwise>
+                AND order_num &lt; (
+                SELECT order_num
+                FROM pro_route_process
+                WHERE route_id = #{routeId} limit 1
+                )
+            </otherwise>
+        </choose>
+        ORDER BY order_num DESC LIMIT 1
+    </select>
+
+    <select id="findNextProcess"   resultMap="ProRouteProcessResult">
+        <include refid="selectProRouteProcessVo"/>
+        where route_id = #{routeId}
+        <choose>
+            <when test="orderNum != null "> and order_num &gt; #{orderNum}</when>
+            <otherwise>
+                AND order_num &gt; (
+                SELECT order_num
+                FROM pro_route_process
+                WHERE route_id = #{routeId} limit 1
+                )
+            </otherwise>
+        </choose>
+        ORDER BY order_num ASC LIMIT 1
+    </select>
+
+
+
+
+</mapper>

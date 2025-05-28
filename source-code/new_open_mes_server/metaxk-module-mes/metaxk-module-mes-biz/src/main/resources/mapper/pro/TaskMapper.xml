@@ -1,0 +1,254 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="io.metaxk.module.mes.dal.mysql.pro.TaskMapper">
+
+    <resultMap type="io.metaxk.module.mes.controller.admin.pro.vo.ProTaskVo" id="TaskVOResult">
+        <result property="id"    column="id"    />
+        <result property="taskCode"    column="task_code"    />
+        <result property="taskName"    column="task_name"    />
+        <result property="workorderId"    column="workorder_id"    />
+        <result property="workorderCode"    column="workorder_code"    />
+        <result property="workorderName"    column="workorder_name"    />
+        <result property="workstationId"    column="workstation_id"    />
+        <result property="workstationCode"    column="workstation_code"    />
+        <result property="workstationName"    column="workstation_name"    />
+        <result property="processId"    column="process_id"    />
+        <result property="processCode"    column="process_code"    />
+        <result property="processName"    column="process_name"    />
+        <result property="itemId"    column="item_id"    />
+        <result property="itemCode"    column="item_code"    />
+        <result property="itemName"    column="item_name"    />
+        <result property="specification"    column="specification"    />
+        <result property="unitOfMeasure"    column="unit_of_measure"    />
+        <result property="quantity"    column="quantity"    />
+        <result property="quantityProduced"    column="quantity_produced"    />
+        <result property="quantityQuanlify"    column="quantity_quanlify"    />
+        <result property="quantityUnquanlify"    column="quantity_unquanlify"    />
+        <result property="quantityChanged"    column="quantity_changed"    />
+        <result property="clientId"    column="client_id"    />
+        <result property="clientCode"    column="client_code"    />
+        <result property="clientName"    column="client_name"    />
+        <result property="clientNick"    column="client_nick"    />
+        <result property="startTime"    column="start_time"    />
+        <result property="duration"    column="duration"    />
+        <result property="endTime"    column="end_time"    />
+        <result property="colorCode"    column="color_code"    />
+        <result property="requestDate"    column="request_date"    />
+        <result property="status"    column="status"    />
+        <result property="attr1"    column="attr1"    />
+        <result property="attr2"    column="attr2"    />
+        <result property="attr3"    column="attr3"    />
+        <result property="attr4"    column="attr4"    />
+        <result property="machineryCode"    column="machinery_code"    />
+        <result property="machineryName"    column="machinery_name"    />
+        <result property="taskUrl"    column="task_url"    />
+        <result property="barcodeFormat"    column="barcode_format"    />
+        <result property="processUrl"    column="process_url"    />
+    </resultMap>
+
+
+
+    <resultMap type="io.metaxk.module.mes.controller.admin.pro.vo.TaskOrderVo" id="TaskOrderResult">
+        <result property="processCode"    column="process_code"    />
+        <result property="processName"    column="process_name"    />
+        <result property="remark"    column="remark"    />
+        <result property="processUrl"    column="process_url"    />
+        <result property="taskCode"    column="task_code"    />
+        <result property="itemCode"    column="item_code"    />
+        <result property="unitOfMeasure"    column="unit_of_measure"    />
+        <result property="workorderCode"    column="workorder_code"    />
+        <result property="itemName"    column="item_name"    />
+        <result property="quantity"    column="quantity"    />
+        <result property="taskUrl"    column="task_url"    />
+        <result property="barcodeFormat"    column="barcode_format"    />
+    </resultMap>
+
+
+
+
+
+    <resultMap type="io.metaxk.module.mes.controller.admin.pro.vo.TaskListByConditionalVo" id="TaskListByConditionalVOResult">
+        <result property="id"    column="id"    />
+        <result property="taskCode"    column="task_code"    />
+        <result property="taskName"    column="task_name"    />
+        <result property="workorderCode"    column="workorder_code"    />
+        <result property="workorderName"    column="workorder_name"    />
+        <result property="workstationCode"    column="workstation_code"    />
+        <result property="workstationName"    column="workstation_name"    />
+        <result property="processCode"    column="process_code"    />
+        <result property="processName"    column="process_name"    />
+        <result property="itemCode"    column="item_code"    />
+        <result property="itemName"    column="item_name"    />
+        <result property="unitOfMeasure"    column="unit_of_measure"    />
+        <result property="startTime"    column="start_time"    />
+        <result property="unitOfMeasure"    column="unit_of_measure"    />
+        <result property="duration"    column="duration"    />
+        <result property="requestDate"    column="request_date"    />
+        <result property="machineryCode"    column="machinery_code"    />
+        <result property="machineryName"    column="machinery_name"    />
+        <result property="quantity"    column="quantity"    />
+        <result property="teamCode"    column="team_code"    />
+        <result property="teamName"    column="team_name"    />
+    </resultMap>
+
+
+
+
+    <!-- 条件查询生产任务    -->
+    <select id="listByConditionals"   resultMap="TaskListByConditionalVOResult">
+
+        select t.id, t.task_code,t.task_name, t.team_code,t.team_name,
+        t.workorder_code,t.workorder_name,t.workstation_code,t.workstation_name,
+        t.process_code,t.process_name,
+        t.item_code,t.item_name,t.unit_of_measure,t.quantity, t.start_time,
+        t.duration,t.request_date
+        FROM pro_task as t
+        left join  md_workstation as z on t.workstation_id = z.id
+        <where>
+            <if test="taskCode != null and taskCode != ''"> and t.task_code = #{taskCode}</if>
+            <if test="taskName != null and taskName != ''"> and t.task_name like concat('%', #{taskName}, '%')</if>
+            <if test="workstationCode != null and workstationCode != ''"> and t.workstation_code = #{workstationCode}</if>
+            <if test="workstationName != null  and workstationName != ''"> and t.workstation_name like concat('%', #{workstationName}, '%')</if>
+            <if test="machineryCode != null and machineryCode != ''"> and s.machinery_code = #{machineryCode}</if>
+            <if test="machineryName != null and machineryName != ''"> and s.machinery_name like concat('%', #{machineryName}, '%')</if>
+            <if test="workorderCode != null and workorderCode != ''"> and t.workorder_code = #{workorderCode}</if>
+            <if test="processCode != null and processCode != ''"> and t.process_code = #{processCode}</if>
+            <if test="processName != null and processName != ''"> and t.process_name like concat('%', #{processName}, '%')</if>
+            <if test="startTime != ''"> and date_format(start_time,'%y%m%d') = date_format(#{startTime},'%y%m%d')</if>
+            <if test="endTime != ''"> or date_format(end_time,'%y%m%d') = date_format(#{endTime},'%y%m%d')</if>
+        </where>
+        ORDER BY start_time ASC
+    </select>
+
+
+
+
+
+
+
+
+    <select id="selectTaskOrder" parameterType="String" resultMap="TaskOrderResult">
+        select t.process_code,t.process_name,p.remark,t.process_url,t.task_code,t.item_code,m.measure_name,
+               t.workorder_code,t.item_name,t.quantity,t.task_url,t.barcode_format
+        from pro_task  as t left join pro_process as p  on t.process_code = p.process_code
+                            left join md_unit_measure as m  on t.unit_of_measure = m.measure_code
+        where workorder_code = #{workorderCode}
+    </select>
+
+
+
+
+
+    <update id="update" >
+        update pro_task
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="taskCode != null and taskCode != ''">task_code = #{taskCode},</if>
+            <if test="taskName != null and taskName != ''">task_name = #{taskName},</if>
+            <if test="workorderId != null">workorder_id = #{workorderId},</if>
+            <if test="workorderCode != null and workorderCode != ''">workorder_code = #{workorderCode},</if>
+            <if test="workorderName != null and workorderName != ''">workorder_name = #{workorderName},</if>
+            <if test="workstationId != null">workstation_id = #{workstationId},</if>
+            <if test="workstationCode != null and workstationCode != ''">workstation_code = #{workstationCode},</if>
+            <if test="workstationName != null and workstationName != ''">workstation_name = #{workstationName},</if>
+            <if test="processId != null">process_id = #{processId},</if>
+            <if test="processCode != null">process_code = #{processCode},</if>
+            <if test="processName != null">process_name = #{processName},</if>
+            <if test="itemId != null">item_id = #{itemId},</if>
+            <if test="itemCode != null and itemCode != ''">item_code = #{itemCode},</if>
+            <if test="itemName != null and itemName != ''">item_name = #{itemName},</if>
+            <if test="specification != null">specification = #{specification},</if>
+            <if test="unitOfMeasure != null and unitOfMeasure != ''">unit_of_measure = #{unitOfMeasure},</if>
+            <if test="quantity != null">quantity = #{quantity},</if>
+            <if test="quantityProduced != null">quantity_produced = #{quantityProduced},</if>
+            <if test="quantityQuanlify != null ">quantity_quanlify = #{quantityQuanlify},</if>
+            <if test="quantityUnquanlify != null ">quantity_unquanlify = #{quantityUnquanlify},</if>
+            <if test="quantityChanged != null">quantity_changed = #{quantityChanged},</if>
+            <if test="clientId != null">client_id = #{clientId},</if>
+            <if test="clientCode != null and clientCode != ''">client_code = #{clientCode},</if>
+            <if test="clientName != null and clientName != ''">client_name = #{clientName},</if>
+            <if test="clientNick != null">client_nick = #{clientNick},</if>
+            <if test="startTime != null">start_time = #{startTime},</if>
+            <if test="duration != null">duration = #{duration},</if>
+            <if test="endTime != null">end_time = #{endTime},</if>
+            <if test="colorCode != null">color_code = #{colorCode},</if>
+            <if test="requestDate != null">request_date = #{requestDate},</if>
+            <if test="status != null">status = #{status},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+
+
+
+    <select id="selectTaskList"   resultMap="TaskListByConditionalVOResult">
+        select t.id, t.task_code,t.task_name,
+        t.workorder_code,t.workorder_name,t.workstation_code,t.workstation_name,
+        t.process_code,t.process_name,
+        t.item_code,t.item_name,t.unit_of_measure,t.quantity, t.start_time,
+        t.duration,t.color_code,t.request_date,
+        s.machinery_code,s.machinery_name
+        FROM pro_task as t
+        left join  md_workstation as z on t.workstation_id = z.id
+        left join  md_workstation_machine as sm  on z.id =  sm.workstation_id
+        left join  dv_machinery as s on sm.machinery_id = s.id
+    </select>
+
+
+
+    <select id="TaskListByConditionalVO"   resultMap="TaskListByConditionalVOResult">
+        select t.id, t.task_code,t.task_name,
+               t.workorder_code,t.workorder_name,t.workstation_code,t.workstation_name,
+               t.process_code,t.process_name,
+               t.item_code,t.item_name,t.unit_of_measure,t.quantity, t.start_time,
+               t.duration,t.color_code,t.request_date,
+               s.machinery_code,s.machinery_name
+        FROM pro_task as t
+                 left join  md_workstation as z on t.workstation_id = z.id
+                 left join  md_workstation_machine as sm  on z.id =  sm.workstation_id
+                 left join  dv_machinery as s on sm.machinery_id = s.id
+        where z.workstation_code =  #{workstationCode}
+        LIMIT 1
+    </select>
+
+
+
+
+
+
+    <select id="findTaskByOrderCode"   resultMap="TaskListByConditionalVOResult">
+        select t.id, t.task_code,t.task_name,
+        t.workorder_code,t.workorder_name,t.workstation_code,t.workstation_name,
+        t.process_code,t.process_name,
+        t.item_code,t.item_name,t.unit_of_measure,t.quantity, t.start_time,
+        t.duration,t.color_code,t.request_date,
+        s.machinery_code,s.machinery_name
+        FROM pro_task as t
+        left join  md_workstation as z on t.workstation_id = z.id
+        left join  md_workstation_machine as sm  on z.id =  sm.workstation_id
+        left join  dv_machinery as s on sm.machinery_id = s.id
+        where t.workorder_code = #{workOrderCode}
+        ORDER BY start_time ASC
+    </select>
+
+
+
+
+
+    <!-- 条件查询生产任务    -->
+    <select id="findTaskByCode"   resultMap="TaskListByConditionalVOResult">
+        select t.id, t.task_code,t.task_name,
+        t.workorder_code,t.workorder_name,t.workstation_code,t.workstation_name,
+        t.process_code,t.process_name,
+        t.item_code,t.item_name,t.unit_of_measure,t.quantity, t.start_time,
+        t.duration,t.request_date
+        FROM pro_task as t
+        left join  md_workstation as z on t.workstation_id = z.id
+        <where>
+            <if test="id != null and id != ''"> and t.id = #{id}</if>
+        </where>
+        ORDER BY start_time ASC
+    </select>
+
+
+</mapper>

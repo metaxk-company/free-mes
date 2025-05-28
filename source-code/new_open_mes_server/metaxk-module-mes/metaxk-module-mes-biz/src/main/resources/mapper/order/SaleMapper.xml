@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.metaxk.module.mes.dal.mysql.order.SaleMapper">
+
+    <resultMap type="io.metaxk.module.mes.controller.admin.order.vo.ProductResVo" id="ProjectResVoResult">
+        <result property="productNumber"    column="item_code"    />
+        <result property="productName"    column="item_name"    />
+        <result property="lineType"    column="line_type"    />
+        <result property="model"    column="model"    />
+        <result property="spec"    column="spec"    />
+        <result property="unit"    column="unit_of_measure"    />
+        <result property="rawPrice"    column="purchase_price"    />
+        <result property="price"    column="price"    />
+        <result property="productType"    column="item_type_name"    />
+        <result property="processingFee"    column="quote_price"    />
+    </resultMap>
+
+
+
+    <resultMap type="io.metaxk.module.mes.controller.admin.order.vo.PrintSaleDateVo" id="PrintSaleDateVoResult">
+        <result property="customerName"    column="customer_name"    />
+        <result property="saleNumber"    column="sale_number"    />
+        <result property="model"    column="model"    />
+        <result property="spec"    column="spec"    />
+        <result property="unit"    column="unit"    />
+        <result property="quantity"    column="quantity"    />
+        <result property="specPrice"    column="spec_price"    />
+        <result property="rawPrice"    column="raw_price"    />
+        <result property="processingFee"    column="processing_fee"    />
+        <result property="isFax"    column="is_fax"    />
+    </resultMap>
+
+
+
+
+
+
+
+    <resultMap type="io.metaxk.module.mes.controller.admin.order.vo.SaleCountVo" id="SaleCountVoResult">
+        <result property="number"    column="number"    />
+        <result property="customerNumber"    column="customer_number"    />
+        <result property="customerName"    column="customer_name"    />
+        <result property="customerOrderNumber"    column="customer_order_number"    />
+        <result property="includeTax"    column="include_tax"    />
+        <result property="noIncludeTax"    column="no_include_tax"    />
+        <result property="quantity"    column="quantity"    />
+        <result property="sendOut"    column="send_out"    />
+        <result property="noSend"    column="no_send"    />
+        <result property="saleNumber"    column="sale_number"    />
+        <result property="itemCode"    column="item_code"    />
+        <result property="model"    column="model"    />
+        <result property="spec"    column="spec"    />
+        <result property="lineType"    column="line_type"    />
+        <result property="pieces"    column="pieces"    />
+        <result property="totalTare"    column="total_tare"    />
+    </resultMap>
+
+
+
+
+
+
+
+
+
+    <select id="findProductList" resultMap="ProjectResVoResult" parameterType="string">
+--         SELECT md_item.item_code,md_item.item_name,md_item.line_type,md_item.model,md_item.spec,
+--         md_item.unit_of_measure,md_item.purchase_price,md_item.sale_price as price,md_item.item_type_name,temp_models.price as quote_price
+--         FROM md_item JOIN (
+--         select item.quote_number,a.customer_name,a.model,item.start_spec,item.end_spec,item.price
+--         from (
+--         SELECT
+--         order_quote.customer_name, order_quote.number,
+--         SUBSTRING_INDEX(SUBSTRING_INDEX(order_quote.model, ',', numbers.n), ',', -1) AS model
+--         FROM
+--         order_quote
+--         JOIN (
+--         SELECT 1 AS n UNION ALL
+--         SELECT 2 AS n UNION ALL
+--         SELECT 3 AS n UNION ALL
+--         SELECT 4 AS n
+--         ) numbers ON CHAR_LENGTH(order_quote.model) - CHAR_LENGTH(REPLACE(order_quote.model, ',', '')) >= numbers.n - 1 )  as a
+--         right JOIN    order_quote_item as item on a.number = item.quote_number
+--         WHERE
+--         a.customer_name = #{customerName}
+--         ) AS temp_models ON md_item.model = temp_models.model   and ( md_item.spec  &gt;= temp_models.start_spec and md_item.spec &lt;= temp_models.end_spec)
+--         WHERE  md_item.kind = '成品线'
+--         AND md_item.item_or_product = 'PRODUCT'
+        SELECT
+        a.item_code,
+        a.item_name,
+        a.line_type,
+        a.model,
+        a.spec,
+        a.max_stock AS stocks,
+        a.unit_of_measure,
+        a.purchase_price,
+        a.sale_price AS price,
+        a.item_type_name,
+        b.customer_name,
+        b.price as quote_price
+        FROM
+        md_item a
+        INNER JOIN
+        (
+        SELECT
+        DISTINCT SUBSTRING_INDEX( SUBSTRING_INDEX( oq.model, ',', numbers.n ), ',', - 1 ) AS model,
+        oq.customer_name, oq.line_type, oqi.start_spec, oqi.end_spec,oqi.spec, oqi.price
+        FROM
+        order_quote oq
+        LEFT JOIN order_quote_item oqi ON oq.number = oqi.quote_number
+        AND oqi.tenant_id = 1
+        JOIN ( SELECT 1 AS n UNION ALL SELECT 2 AS n UNION ALL SELECT 3 AS n UNION ALL SELECT 4 AS n ) numbers ON CHAR_LENGTH( oq.model ) - CHAR_LENGTH(
+        REPLACE ( oq.model, ',', '' )) >= numbers.n - 1
+        ) as b ON b.customer_name = #{customerName} AND a.model = b.model AND a.line_type = b.line_type AND (a.spec &gt;= b.start_spec AND a.spec &lt;= b.end_spec)
+        <if test="productNumber != null and productNumber != ''"> AND a.item_code = #{productNumber}</if>
+            <if test="productName != null and productName != ''"> AND a.item_name = #{productName}</if>
+            <if test="model != null and model != ''"> AND a.model = #{model}</if>
+            <if test="spec != null and spec != ''"> AND a.spec = #{spec}</if>
+    </select>
+
+
+
+
+
+    <select id="printPurchaseOrder"  parameterType="string" resultMap="PrintSaleDateVoResult" >
+        select sa.customer_name,sa.sale_number,it.model,it.spec,it.unit,it.quantity,it.spec_price,it.raw_price,it.processing_fee,sa.is_fax
+        from  order_sale sa left join   order_sale_item  it    on  sa.sale_number = it.sale_number
+        where sa.sale_number = #{saleNumber}
+    </select>
+
+
+
+
+
+
+    <!--根据客户编号查询客户报价单中的型号，对客户报价单型号进行解析查询对应产品中的型号信息。根据查询出来的产品中的规格匹配客户报价单中对应型号的加工费-->
+    <select id="findProductListAll" resultMap="ProjectResVoResult" parameterType="string">
+        SELECT
+        a.item_code,
+        a.item_name,
+        a.line_type,
+        a.model,
+        a.spec,
+        a.max_stock AS stocks,
+        a.unit_of_measure,
+        a.purchase_price,
+        a.sale_price AS price,
+        a.item_type_name,
+        b.customer_name,
+        b.price as quote_price
+        FROM
+        md_item a
+        INNER JOIN
+        (
+        SELECT
+        DISTINCT SUBSTRING_INDEX( SUBSTRING_INDEX( oq.model, ',', numbers.n ), ',', - 1 ) AS model,
+        oq.customer_name, oq.line_type, oqi.start_spec, oqi.end_spec,oqi.spec, oqi.price
+        FROM
+        order_quote oq
+        LEFT JOIN order_quote_item oqi ON oq.number = oqi.quote_number
+        AND oqi.tenant_id = 1
+        JOIN ( SELECT 1 AS n UNION ALL SELECT 2 AS n UNION ALL SELECT 3 AS n UNION ALL SELECT 4 AS n ) numbers ON CHAR_LENGTH( oq.model ) - CHAR_LENGTH(
+        REPLACE ( oq.model, ',', '' )) >= numbers.n - 1
+        ) as b ON b.customer_name = #{customerName} AND a.model = b.model AND a.line_type = b.line_type AND (a.spec &gt;= b.start_spec AND a.spec &lt;= b.end_spec)
+        <where>
+            <if test="productNumber != null and productNumber != ''">AND a.item_code = #{productNumber}</if>
+            <if test="productName != null and productName != ''">AND a.item_name = #{productName}</if>
+            <if test="model != null and model != ''">AND a.model LIKE CONCAT('%', #{model}, '%')</if>
+            <if test="spec != null and spec != ''">AND a.spec LIKE CONCAT('%', #{spec}, '%')</if>
+            <if test="lineType != null and lineType != ''">AND a.line_type = #{lineType}</if>
+        </where>
+    </select>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <select id="findCountOutBound"  parameterType="string" resultMap="SaleCountVoResult" >
+        select   ou.number,ou.customer_number,ou.customer_name,ou.customer_order_number,sa.include_tax,sa.no_include_tax,sa.quantity,it.send_out,it.no_send,it.sale_number,
+                 it.item_code,it.model,it.spec,it.line_type,it.pieces,it.total_tare
+        from order_sale sa
+         LEFT JOIN    order_outbound ou  on sa.number = ou.sale_number
+         LEFT JOIN    order_outbound_item  it  on ou.number = it.outbound_number   where sa.number = #{saleNumber}
+    </select>
+
+
+
+
+
+
+
+
+
+
+</mapper>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.metaxk.module.mes.dal.mysql.pro.FeedbackEquStatusMapper">
+
+    <resultMap type="io.metaxk.module.mes.dal.dataobject.pro.FeedbackEquStatus" id="ProFeedbackEquStatusResult">
+        <result property="id"    column="id"    />
+        <result property="status"    column="status"    />
+        <result property="time"    column="time"    />
+        <result property="remork"    column="remork"    />
+    </resultMap>
+
+
+    <resultMap type="EquipmentTimeVo" id="EquipmentTimeResult">
+        <result property="equipmentTime"    column="equipment_time"    />
+    </resultMap>
+
+
+
+
+
+    <select id="findTimeByFeedEqipId" parameterType="Long" resultMap="EquipmentTimeResult">
+        SELECT CONCAT(
+                       FLOOR(TIMESTAMPDIFF(SECOND, MIN(time), MAX(time)) / 86400), '天 ',
+                       FLOOR((TIMESTAMPDIFF(SECOND, MIN(time), MAX(time)) % 86400) / 3600), '小时 ',
+                       ROUND((TIMESTAMPDIFF(SECOND, MIN(time), MAX(time)) % 3600) / 60), '分钟 '
+                   ) AS equipment_time FROM pro_feedback_equ_status
+        where  id = #{feedEquipId}
+    </select>
+
+
+    <select id="findEquipmentStatusByfeedStatusId" parameterType="Long" resultMap="ProFeedbackEquStatusResult">
+        SELECT fe.id, fe.status, fe.time, fe.remork
+        FROM pro_feedback_equ_status fe
+        WHERE fe.time = (
+            SELECT MAX(fe2.time)
+            FROM pro_feedback_equ_status fe2
+            WHERE fe2.id = fe.id
+        )
+          AND fe.id = #{equipmentStatusId}
+    </select>
+
+
+
+
+
+
+
+
+
+
+</mapper>

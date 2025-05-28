@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.metaxk.module.mes.dal.mysql.qc.OtherStandardMapper">
+
+    <resultMap type="io.metaxk.module.mes.dal.dataobject.qc.OtherStandard" id="OtherStandardResult">
+        <result property="number"    column="number"    />
+    </resultMap>
+
+    <select id="findOtherStandard" resultMap="OtherStandardResult">
+        select number from qc_other_standard where model like concat('%', #{model}, '%')
+        and spec like concat('%', #{spec}, '%')
+        and line_type like concat('%', #{lineType}, '%')
+    </select>
+
+</mapper>

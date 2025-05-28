@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.metaxk.module.mes.dal.mysql.cla.ClassPlanMapper">
+
+    <resultMap type="io.metaxk.module.mes.controller.admin.cla.vo.ScheduleMemberVo" id="ScheduleMemberResult">
+        <result property="peopleId"    column="people_id"    />
+        <result property="planPeopleName"    column="plan_people_name"    />
+        <result property="startDate"    column="start_date"    />
+        <result property="endDate"    column="end_date"    />
+        <result property="teamCode"    column="team_code"    />
+        <result property="teamName"    column="team_name"    />
+        <result property="peopleQuantity"    column="people_quantity"    />
+        <result property="taskCode"    column="task_code"    />
+    </resultMap>
+
+
+    <select id="findMemberByCodeAndWay" resultMap="ScheduleMemberResult">
+        SELECT  p.people_id,p.plan_people_name,t.start_date,t.end_date ,t.team_code,t.team_name,p.people_quantity,p.task_code
+        FROM cla_plan_team   as t
+        INNER JOIN cla_plan_team_people as p ON t.team_code = p.team_code AND t.team_type = p.team_type AND t.team_name = p.team_name
+        where t.team_code = #{teamCode} and  t.shift_way = #{shiftWay}
+    </select>
+
+
+
+</mapper>

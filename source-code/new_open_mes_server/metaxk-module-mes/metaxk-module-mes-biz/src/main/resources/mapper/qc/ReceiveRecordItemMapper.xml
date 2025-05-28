@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.metaxk.module.mes.dal.mysql.qc.ReceiveRecordItemMapper">
+
+    <resultMap type="io.metaxk.module.mes.controller.admin.qc.vo.ReceiveRecordItemsVo" id="ReceiveRecordItemsVoResult">
+        <result property="recStandardNumber"    column="recStandardNumber"    />
+        <result property="standardItemId"    column="standardItemId"    />
+        <result property="itemName"    column="itemName"    />
+        <result property="itemStandard"    column="itemStandard"    />
+        <result property="itemDevice"    column="itemDevice"    />
+        <result property="itemValue"    column="itemValue"    />
+    </resultMap>
+
+    <select id="getCount" resultType="int">
+        SELECT COUNT(1) FROM (
+            SELECT sort_number FROM qc_receive_record_item WHERE flag = '1' AND record_id = #{recordId} GROUP BY sort_number) a
+    </select>
+
+    <update id="updateReceiveRecordItem">
+        update qc_receive_record_item set
+        <if test="flag != ''"> flag = #{flag} </if>
+        <if test="itemBarCode != ''"> ,item_barcode = #{itemBarCode} </if>
+        where record_id = #{recordId} and sort_number = #{sortNumber}
+    </update>
+
+    <select id="selectMaxDetectionOrderNumber" resultType = "String">
+        select max(sort_number) from qc_receive_record_item where record_id = #{recordId}
+    </select>
+
+    <!--<select id="getReceiveRecordItems" resultMap="ReceiveRecordItemsVoResult">
+        SELECT b.id as standardItemId, b.name as itemName,b.standard as itemStandard,v.device_name as itemDevice,d.item_value as itemValue
+			FROM qc_receive_standard a
+                LEFT JOIN qc_receive_standard_item b ON a.number=b.rec_standard_number
+                LEFT JOIN qc_receive_record c ON a.rec_number=c.rec_number
+                LEFT JOIN ((select * from qc_receive_record_item where sort_number = #{maxSortNumber})) d ON c.id=d.record_id AND b.name=d.item_name
+                LEFT JOIN qc_device v ON v.device_code = b.device
+        WHERE a.enable_flag='true' AND c.id=#{recordId} AND a.rec_number=#{recNumber}
+    </select>-->
+
+    <select id="getReceiveRecordItems" resultMap="ReceiveRecordItemsVoResult">
+        SELECT b.id as standardItemId, b.name as itemName,b.standard as itemStandard,v.device_name as itemDevice,d.item_value as itemValue
+        FROM (
+                SELECT DISTINCT SUBSTRING_INDEX( SUBSTRING_INDEX( s.item_code, ',', numbers.n ), ',', - 1 ) AS item_code,s.enable_flag as enable_flag,s.number as number FROM qc_receive_standard s
+                JOIN ( SELECT 1 AS n UNION ALL SELECT 2 AS n UNION ALL SELECT 3 AS n UNION ALL SELECT 4 AS n UNION ALL SELECT 5 AS n UNION ALL SELECT 6 AS n UNION ALL SELECT 7 AS n UNION ALL SELECT 8 AS n UNION ALL SELECT 9 AS n UNION ALL SELECT 10 AS n ) numbers
+                ON CHAR_LENGTH( s.item_code ) - CHAR_LENGTH(
+                         REPLACE ( s.item_code, ',', '' )) >= numbers.n - 1
+             ) as a
+                 LEFT JOIN (
+                    SELECT DISTINCT SUBSTRING_INDEX( SUBSTRING_INDEX( i.rec_standard_number, ',', numbers.n ), ',', - 1 ) AS rec_standard_number,i.id as id,i.name as name,i.standard as standard,i.device as device FROM qc_receive_standard_item i
+                          JOIN ( SELECT 1 AS n UNION ALL SELECT 2 AS n UNION ALL SELECT 3 AS n UNION ALL SELECT 4 AS n UNION ALL SELECT 5 AS n UNION ALL SELECT 6 AS n UNION ALL SELECT 7 AS n UNION ALL SELECT 8 AS n UNION ALL SELECT 9 AS n UNION ALL SELECT 10 AS n ) numbers
+                          ON CHAR_LENGTH( i.rec_standard_number ) - CHAR_LENGTH(
+                          REPLACE ( i.rec_standard_number, ',', '' )) >= numbers.n - 1
+                ) as b ON a.number=b.rec_standard_number
+                 LEFT JOIN qc_receive_record c ON a.item_code=c.item_code
+                 LEFT JOIN ((select * from qc_receive_record_item where sort_number = #{maxSortNumber})) d ON c.id=d.record_id AND b.name=d.item_name
+                 LEFT JOIN qc_device v ON v.device_code = b.device
+        WHERE a.enable_flag='true' AND c.id=#{recordId} AND a.item_code=#{itemCode}
+    </select>
+
+
+</mapper>

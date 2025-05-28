@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.metaxk.module.mes.dal.mysql.order.SaleItemPriceMapper">
+
+    <resultMap type="io.metaxk.module.mes.controller.admin.order.vo.SaleItemPriceVo" id="SaleItemPriceVoResult">
+        <result property="label"    column="label"    />
+        <result property="value"    column="value"    />
+    </resultMap>
+
+
+    <select id="findPrice" resultMap="SaleItemPriceVoResult">
+        SELECT CONCAT(time,'#',category,'#',price_ton,'#',price_kg) as label, price_kg  as value
+        FROM order_sale_item_price
+        WHERE category  LIKE  CONCAT('%',#{param1},'%')
+        ORDER BY time DESC
+        LIMIT 7
+    </select>
+
+
+
+</mapper>

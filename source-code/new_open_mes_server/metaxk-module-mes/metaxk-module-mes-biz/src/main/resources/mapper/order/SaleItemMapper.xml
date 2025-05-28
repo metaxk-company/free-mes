@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.metaxk.module.mes.dal.mysql.order.SaleItemMapper">
+
+    <resultMap type="SaleItem" id="SaleItemResult">
+        <result property="id"    column="id"    />
+        <result property="saleNumber"    column="sale_number"    />
+        <result property="productNumber"    column="product_number"    />
+        <result property="lineType"    column="line_type"    />
+        <result property="model"    column="model"    />
+        <result property="spec"    column="spec"    />
+        <result property="quantity"    column="quantity"    />
+        <result property="unit"    column="unit"    />
+        <result property="rawPrice"    column="raw_price"    />
+        <result property="processingFee"    column="processing_fee"    />
+        <result property="price"    column="sales_price"    />
+        <result property="stocks"    column="stocks"    />
+        <result property="totalPrice"    column="total_price"    />
+        <result property="discount"    column="discount"    />
+        <result property="color"    column="color"    />
+        <result property="panhao"    column="panhao"    />
+        <result property="customerCode"    column="customer_code"    />
+        <result property="inventoryNumber"    column="inventory_number"    />
+        <result property="warrantNumber"    column="warrant_number"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+
+    <select id="findSaleItemListByNum"  parameterType="string"  resultMap="SaleItemResult">
+
+    </select>
+
+
+
+</mapper>

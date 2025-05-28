@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.metaxk.module.mes.dal.mysql.order.QuoteMapper">
+
+    <resultMap type="io.metaxk.module.mes.controller.admin.order.vo.QuoteExportVo" id="QuoteExportVoResult">
+        <result property="customerName"    column="customer_name"    />
+        <result property="lineType"    column="line_type"    />
+        <result property="model"    column="model"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="spec"    column="spec"    />
+        <result property="startSpec"    column="start_spec"    />
+        <result property="endSpec"    column="end_spec"    />
+        <result property="price"    column="price"    />
+    </resultMap>
+
+
+    <select id="exportData" resultMap="QuoteExportVoResult">
+        select qo.customer_name,qo.line_type,qo.model,qo.create_time,it.spec,it.start_spec,it.end_spec,it.price
+        from order_quote qo left join    order_quote_item it    ON qo.number = it.quote_number
+        WHERE it.quote_number IN
+            <foreach collection="number" item="number" open="(" separator="," close=")">
+                #{number}
+            </foreach>
+    </select>
+
+
+    <select id="exportAllData" resultMap="QuoteExportVoResult">
+        select qo.customer_name,qo.line_type,qo.model,qo.create_time,it.spec,it.start_spec,it.end_spec,it.price
+        from order_quote qo left join    order_quote_item it    ON qo.number = it.quote_number
+    </select>
+
+
+
+</mapper>

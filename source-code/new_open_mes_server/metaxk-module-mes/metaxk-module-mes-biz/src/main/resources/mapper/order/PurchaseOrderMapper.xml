@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.metaxk.module.mes.dal.mysql.order.PurchaseOrderMapper">
+
+    <resultMap type="io.metaxk.module.mes.controller.admin.order.vo.PurchaseOrderVo" id="PurchaseOrderVoResult">
+        <result property="number"    column="number"    />
+        <result property="vendorName"    column="vendor_name"    />
+        <result property="deliveryDate"    column="delivery_date"    />
+        <result property="itemName"    column="item_name"    />
+        <result property="model"    column="model"    />
+        <result property="spec"    column="spec"    />
+        <result property="unitOfMeasure"    column="unit_of_measure"    />
+        <result property="purchasePrice"    column="purchase_price"    />
+        <result property="quantity"    column="quantity"    />
+    </resultMap>
+
+
+    <resultMap type="io.metaxk.module.mes.controller.admin.order.vo.PurchaseOrderExcelVo" id="PurchaseOrderVoExcelResult">
+        <result property="number"    column="number"    />
+        <result property="deliveryDate"    column="delivery_date"    />
+        <result property="vendorName"    column="vendor_name"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="vendor"    column="vendor"    />
+        <result property="itemCode"    column="item_code"    />
+        <result property="itemName"    column="item_name"    />
+        <result property="model"    column="model"    />
+        <result property="spec"    column="spec"    />
+        <result property="quantity"    column="quantity"    />
+        <result property="kind"    column="kind"    />
+        <result property="unitOfMeasure"    column="unit_of_measure"    />
+        <result property="purchasePrice"    column="purchase_price"    />
+        <result property="prices"    column="prices"    />
+    </resultMap>
+
+
+
+    <select id="PurchaseOrderPriant" resultMap="PurchaseOrderVoResult">
+        select   po.delivery_date,po.number,po.vendor_name,it.item_name,it.spec,it.model,it.unit_of_measure,it.quantity,
+                 it.purchase_price
+        from order_po as po left join  order_po_item  as it on po.number = it.receipt_number  where po.number = #{number}
+    </select>
+
+
+
+
+    <select id="exportData" resultMap="PurchaseOrderVoExcelResult">
+        SELECT
+            po.number,
+            po.delivery_date,
+            po.vendor_name,
+            po.create_time,
+            it.vendor,
+            it.item_code,
+            it.item_name,
+            it.model,
+            it.spec,
+            it.quantity,
+            it.kind,
+            it.unit_of_measure,
+            it.purchase_price,
+            CASE
+                WHEN it.no_includ_tax IS NULL THEN COALESCE(it.includ_tax, 0)
+                WHEN it.includ_tax IS NULL THEN COALESCE(it.no_includ_tax, 0)
+                ELSE it.purchase_price
+                END AS prices
+           FROM
+            order_po po
+             LEFT JOIN
+            order_po_item it ON po.number = it.receipt_number
+        WHERE it.receipt_number IN
+        <foreach collection="number" item="number" open="(" separator="," close=")">
+            #{number}
+        </foreach>
+    </select>
+
+
+
+    <select id="exportAllData" resultMap="PurchaseOrderVoExcelResult">
+        SELECT
+        po.number,
+        po.delivery_date,
+        po.vendor_name,
+        po.create_time,
+        it.vendor,
+        it.item_code,
+        it.item_name,
+        it.model,
+        it.spec,
+        it.quantity,
+        it.kind,
+        it.unit_of_measure,
+        it.purchase_price,
+        CASE
+        WHEN it.no_includ_tax IS NULL THEN COALESCE(it.includ_tax, 0)
+        WHEN it.includ_tax IS NULL THEN COALESCE(it.no_includ_tax, 0)
+        ELSE it.purchase_price
+        END AS prices
+        FROM
+        order_po po
+        LEFT JOIN
+        order_po_item it ON po.number = it.receipt_number
+    </select>
+
+</mapper>

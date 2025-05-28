@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.metaxk.module.mes.dal.mysql.qc.ReceiveStandardMapper">
+
+    <resultMap type="io.metaxk.module.mes.dal.dataobject.qc.ReceiveStandard" id="ReceiveStandardResult">
+        <result property="id"    column="id"    />
+        <result property="number"    column="number"    />
+        <result property="name"    column="name"    />
+        <result property="method"    column="method"    />
+        <result property="version"    column="version"    />
+        <result property="enableFlag"    column="enableFlag"    />
+        <result property="quantity"    column="quantity"    />
+        <result property="itemCode"    column="itemCode"    />
+    </resultMap>
+
+    <select id="findReceiveStandardByItemCode" resultMap="ReceiveStandardResult">
+        select id,number,name,method,version,quantity,item_code as itemCode,enable_flag as enableFlag
+        from qc_receive_standard where item_code like concat('%', #{itemCode}, '%')
+    </select>
+
+</mapper>

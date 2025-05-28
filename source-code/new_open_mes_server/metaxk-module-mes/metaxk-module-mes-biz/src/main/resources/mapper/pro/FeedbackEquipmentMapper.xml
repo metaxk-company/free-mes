@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.metaxk.module.mes.dal.mysql.pro.FeedbackEquipmentMapper">
+
+    <resultMap type="io.metaxk.module.mes.controller.admin.pro.vo.FeedBackEquipmentVo" id="FeedBackEquipmentVoResult">
+        <result property="id"    column="id"    />
+        <result property="feedbackCode"    column="feedback_code"    />
+        <result property="equipmentCode"    column="equipment_code"    />
+        <result property="status"    column="status"    />
+        <result property="time"    column="time"    />
+        <result property="remork"    column="remork"    />
+        <result property="pauseTime"    column="pause_time"    />
+        <result property="taskCode"    column="task_code"    />
+    </resultMap>
+
+    <select id="list" resultMap="FeedBackEquipmentVoResult">
+        SELECT e.id, e.feedback_code, e.equipment_code, s.status, s.time, s.remork, e.pause_time, f.task_code
+        FROM pro_feedback_equipment e
+                 JOIN (
+            SELECT id, MAX(time) AS time
+            FROM pro_feedback_equ_status
+            GROUP BY id
+        ) AS latest_status
+                      ON e.id = latest_status.id
+                 JOIN pro_feedback_equ_status s
+                      ON latest_status.id = s.id AND latest_status.time = s.time
+                 JOIN pro_feedback f
+                 ON e.feedback_code = f.id
+        <where>
+            <if test="id != ''"> and e.id = #{id}</if>
+            <if test="feedbackCode != ''"> and e.feedback_code = #{feedbackCode}</if>
+            <if test="status != ''"> and s.status = #{status}</if>
+        </where>
+    </select>
+
+
+
+</mapper>

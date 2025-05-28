@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.metaxk.module.mes.dal.mysql.order.SaleMapper">
+
+    <resultMap type="io.metaxk.module.mes.controller.admin.order.vo.SaleProgressResVo" id="SaleProgressResult">
+        <result property="model"             column="model"    />
+        <result property="spec"              column="spec"    />
+        <result property="quantity"          column="quantity"    />
+        <result property="sendOut"           column="send_out"    />
+        <result property="noSend"            column="no_send"    />
+        <result property="status"            column="status"    />
+        <result property="inventoryStatus"   column="inventory_status"    />
+        <result property="number"            column="number"    />
+    </resultMap>
+
+
+
+    <!--销售订单进度条查询-->
+    <select id="findProgressBySaleNumber" resultMap="SaleProgressResult">
+        SELECT it.model, it.spec, it.quantity,
+        CASE WHEN ot.status IS NULL THEN '未完成' ELSE ot.status END AS "status",
+        sa.number,
+        CASE WHEN ot.send_out IS NOT NULL THEN ot.send_out ELSE 0 END AS "send_out",
+        CASE WHEN ot.no_send IS NOT NULL THEN ot.no_send ELSE it.quantity END AS "no_send",
+        '0' AS "inventory_status"
+        FROM  order_sale sa   LEFT JOIN  order_sale_item it ON sa.number = it.sale_number
+        LEFT JOIN  order_outbound_item ot ON it.number = ot.sale_item_number
+        WHERE  sa.number = #{number}
+        <choose>
+            <when test="model != null and model != ''">
+                AND it.model = #{model}
+            </when>
+            <when test="spec != null and spec != ''">
+                AND  it.spec = #{spec}
+            </when>
+            <when test="status != null and status != ''">
+                AND ot.item_status = #{status}
+            </when>
+        </choose>
+    </select>
+
+
+
+</mapper>

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <artifactId>metaxk</artifactId>
+        <groupId>io.metaxk.boot</groupId>
+        <version>1.7.1-snapshot</version>
+    </parent>
+    <packaging>pom</packaging>
+    <modules>
+        <module>metaxk-common</module>
+        <module>metaxk-spring-boot-starter-banner</module>
+        <module>metaxk-spring-boot-starter-mybatis</module>
+        <module>metaxk-spring-boot-starter-redis</module>
+        <module>metaxk-spring-boot-starter-web</module>
+        <module>metaxk-spring-boot-starter-security</module>
+
+        <module>metaxk-spring-boot-starter-file</module>
+        <module>metaxk-spring-boot-starter-monitor</module>
+        <module>metaxk-spring-boot-starter-protection</module>
+        <module>metaxk-spring-boot-starter-job</module>
+        <module>metaxk-spring-boot-starter-mq</module>
+
+        <module>metaxk-spring-boot-starter-excel</module>
+        <module>metaxk-spring-boot-starter-test</module>
+
+        <module>metaxk-spring-boot-starter-biz-operatelog</module>
+        <module>metaxk-spring-boot-starter-biz-dict</module>
+        <module>metaxk-spring-boot-starter-biz-sms</module>
+
+        <module>metaxk-spring-boot-starter-biz-pay</module>
+        <module>metaxk-spring-boot-starter-biz-weixin</module>
+        <module>metaxk-spring-boot-starter-biz-social</module>
+        <module>metaxk-spring-boot-starter-biz-tenant</module>
+        <module>metaxk-spring-boot-starter-biz-data-permission</module>
+        <module>metaxk-spring-boot-starter-biz-error-code</module>
+        <module>metaxk-spring-boot-starter-biz-ip</module>
+
+        <module>metaxk-spring-boot-starter-flowable</module>
+        <module>metaxk-spring-boot-starter-captcha</module>
+        <module>metaxk-spring-boot-starter-websocket</module>
+        <module>metaxk-spring-boot-starter-desensitize</module>
+    </modules>
+
+    <artifactId>metaxk-framework</artifactId>
+    <description>
+        该包是技术组件，每个子包，代表一个组件。每个组件包括两部分：
+            1. core 包：是该组件的核心封装
+            2. config 包：是该组件基于 Spring 的配置
+
+        技术组件，也分成两类：
+            1. 框架组件：和我们熟悉的 MyBatis、Redis 等等的拓展
+            2. 业务组件：和业务相关的组件的封装，例如说数据字典、操作日志等等。
+        如果是业务组件，Maven 名字会包含 biz
+    </description>
+    <url>https://github.com/metaxk/cloudmes</url>
+
+</project>

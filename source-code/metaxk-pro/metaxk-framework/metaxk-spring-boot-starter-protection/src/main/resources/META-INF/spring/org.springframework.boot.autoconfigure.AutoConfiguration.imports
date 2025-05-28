@@ -1,0 +1,2 @@
+io.metaxk.framework.idempotent.config.MetaxkIdempotentConfiguration
+io.metaxk.framework.lock4j.config.MetaxkLock4jConfiguration

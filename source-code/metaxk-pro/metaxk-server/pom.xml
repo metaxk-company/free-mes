@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <groupId>io.metaxk.boot</groupId>
+        <artifactId>metaxk</artifactId>
+        <version>1.7.1-snapshot</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>metaxk-server</artifactId>
+    <packaging>jar</packaging>
+
+    <name>${project.artifactId}</name>
+    <description>
+        后端 Server 的主项目，通过引入需要 metaxk-module-xxx 的依赖，
+        从而实现提供 RESTful API 给 metaxk-ui-admin、metaxk-ui-user 等前端项目。
+        本质上来说，它就是个空壳（容器）！
+    </description>
+    <url>https://github.com/metaxk/cloudmes</url>
+
+    <dependencies>
+        <dependency>
+            <groupId>io.metaxk.boot</groupId>
+            <artifactId>metaxk-module-member-biz</artifactId>
+            <version>1.7.1-snapshot</version>
+        </dependency>
+        <dependency>
+            <groupId>io.metaxk.boot</groupId>
+            <artifactId>metaxk-module-system-biz</artifactId>
+            <version>1.7.1-snapshot</version>
+        </dependency>
+        <dependency>
+            <groupId>io.metaxk.boot</groupId>
+            <artifactId>metaxk-module-infra-biz</artifactId>
+            <version>1.7.1-snapshot</version>
+        </dependency>
+        <dependency>
+            <groupId>io.metaxk.boot</groupId>
+            <artifactId>metaxk-spring-boot-starter-biz-error-code</artifactId>
+        </dependency>
+
+        <!-- 数据报表 -->
+        <dependency>
+            <groupId>io.metaxk.boot</groupId>
+            <artifactId>metaxk-module-report-biz</artifactId>
+            <version>1.7.1-snapshot</version>
+        </dependency>
+        <!-- 工作流 -->
+        <dependency>
+            <groupId>io.metaxk.boot</groupId>
+            <artifactId>metaxk-module-bpm-biz</artifactId>
+            <version>1.7.1-snapshot</version>
+        </dependency>
+
+        <!-- spring boot 配置所需依赖 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>io.metaxk.boot</groupId>
+            <artifactId>metaxk-spring-boot-starter-banner</artifactId>
+        </dependency>
+
+        <!-- 服务保障相关 -->
+        <dependency>
+            <groupId>io.metaxk.boot</groupId>
+            <artifactId>metaxk-spring-boot-starter-protection</artifactId>
+        </dependency>
+
+    </dependencies>
+
+    <!-- 不上传到仓库 -->
+    <properties>
+        <maven.deploy.skip>true</maven.deploy.skip>
+    </properties>
+
+    <!--分别设置开发，生产环境-->
+    <profiles>
+        <!-- 开发环境 -->
+        <profile>
+            <id>local</id>
+            <activation>
+                <!--设置默认为dev环境-->
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <environment>local</environment>
+            </properties>
+        </profile>
+        <!-- 生产环境 -->
+        <profile>
+            <id>prod</id>
+            <activation>
+                <!--不设置该环境为默认环境-->
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <properties>
+                <environment>prod</environment>
+            </properties>
+        </profile>
+    </profiles>
+
+    <build>
+        <resources>
+            <!--排除配置文件-->
+            <resource>
+                <directory>src/main/resources</directory>
+                <!--先排除所有的配置文件-->
+                <excludes>
+                    <!--使用通配符，当然可以定义多个exclude标签进行排除-->
+                    <exclude>application*.yaml</exclude>
+                </excludes>
+            </resource>
+
+            <!--根据激活条件引入打包所需的配置和文件-->
+            <resource>
+                <directory>src/main/resources</directory>
+                <!--引入所需环境的配置文件-->
+                <filtering>true</filtering>
+                <includes>
+                    <include>application.yaml</include>
+                    <!--根据maven选择环境导入配置文件-->
+                    <include>application-${environment}.yaml</include>
+                </includes>
+            </resource>
+        </resources>
+
+        <!-- 设置构建的 jar 包名 -->
+        <finalName>${project.artifactId}</finalName>
+        <plugins>
+            <!-- 打包 -->
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>2.7.10</version> <!-- 如果 spring.boot.version 版本修改，则这里也要跟着修改 -->
+                <configuration>
+                    <fork>true</fork>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal> <!-- 将引入的 jar 打入其中 -->
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

@@ -1,0 +1,6 @@
+io.metaxk.framework.apilog.config.MetaxkApiLogAutoConfiguration
+io.metaxk.framework.jackson.config.MetaxkJacksonAutoConfiguration
+com.github.xiaoymin.knife4j.spring.configuration.Knife4jAutoConfiguration
+io.metaxk.framework.swagger.config.MetaxkSwaggerAutoConfiguration
+io.metaxk.framework.web.config.MetaxkWebAutoConfiguration
+io.metaxk.framework.xss.config.MetaxkXssAutoConfiguration

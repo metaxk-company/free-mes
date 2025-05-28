@@ -1,0 +1,2 @@
+org.springframework.boot.env.EnvironmentPostProcessor=\
+  io.metaxk.framework.mybatis.config.IdTypeEnvironmentPostProcessor

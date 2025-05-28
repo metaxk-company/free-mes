@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>metaxk-framework</artifactId>
+        <groupId>io.metaxk.boot</groupId>
+        <version>1.7.1-snapshot</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>metaxk-spring-boot-starter-biz-data-permission</artifactId>
+    <packaging>jar</packaging>
+
+    <name>${project.artifactId}</name>
+    <description>数据权限</description>
+    <url>https://github.com/metaxk/cloudmes</url>
+
+    <dependencies>
+        <dependency>
+            <groupId>io.metaxk.boot</groupId>
+            <artifactId>metaxk-common</artifactId>
+        </dependency>
+
+        <!-- Web 相关 -->
+        <dependency>
+            <groupId>io.metaxk.boot</groupId>
+            <artifactId>metaxk-spring-boot-starter-security</artifactId>
+            <optional>true</optional> <!-- 可选，如果使用 DeptDataPermissionRule 必须提供 -->
+        </dependency>
+
+        <!-- DB 相关 -->
+        <dependency>
+            <groupId>io.metaxk.boot</groupId>
+            <artifactId>metaxk-spring-boot-starter-mybatis</artifactId>
+        </dependency>
+
+        <!-- 业务组件 -->
+        <dependency>
+            <groupId>io.metaxk.boot</groupId>
+            <artifactId>metaxk-module-system-api</artifactId> <!-- 需要使用它，进行数据权限的获取 -->
+            <version>1.7.1-snapshot</version>
+        </dependency>
+
+        <!-- Test 测试相关 -->
+        <dependency>
+            <groupId>io.metaxk.boot</groupId>
+            <artifactId>metaxk-spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+</project>

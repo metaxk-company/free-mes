@@ -1,0 +1,2 @@
+io.metaxk.framework.quartz.config.MetaxkQuartzAutoConfiguration
+io.metaxk.framework.quartz.config.MetaxkAsyncAutoConfiguration

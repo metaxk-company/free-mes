@@ -7,31 +7,7 @@
 #### 部署和文档：基于docker的各种部署方式和使用手册
 #### source-code：核心框架、前、后端源代码
 
-### 建议安装在Ubuntu Server 22.04服务器上面
 
-### 执行步骤：
-### 1、安装docker
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -  
-apt-get install -y software-properties-common  
-add-apt-repository    "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"  
-apt-get install docker-ce  -y
-### 2、安装docker-compose
-sudo curl -L https://github.com/docker/compose/releases/download/v2.20.2/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose  
-sudo chmod +x /usr/local/bin/docker-compose
-### 3、下载源码后，执行 docker-compose up
-### 4、访问：http://localhost:48081  
-用户名：metaxk  
-密码：111111
-
-## 完整代码包含前端、后端、数据大屏、报表系统
-
-## DEMO：
-## 演示账号：
- https://mesv2.cloudmes.io/ 
-### 账号：test001   密码：123456   
-### 账号：test002   密码：123456
-
-## 联系我们：17898898894
 ## MES系统流程图
 <img width="1360" alt="image" src="./images/系统流程图.jpg">
 
@@ -66,3 +42,28 @@ sudo chmod +x /usr/local/bin/docker-compose
 <img width="1360" alt="image" src="./images/数据大屏2.jpg">
 
 
+### 建议安装在Ubuntu Server 22.04服务器上，需要懂技术的哦
+
+### 执行步骤：
+### 1、安装docker
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -  
+apt-get install -y software-properties-common  
+add-apt-repository    "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"  
+apt-get install docker-ce  -y
+### 2、安装docker-compose
+sudo curl -L https://github.com/docker/compose/releases/download/v2.20.2/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose  
+sudo chmod +x /usr/local/bin/docker-compose
+### 3、下载源码后，执行 docker-compose up
+### 4、访问：http://localhost:48081
+用户名：metaxk  
+密码：111111
+
+## 完整代码包含前端、后端、数据大屏、报表系统
+
+## DEMO：
+## 演示账号：
+https://mesv2.cloudmes.io/
+### 账号：test001   密码：123456
+### 账号：test002   密码：123456
+
+## 联系我们：17898898894

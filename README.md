@@ -1,8 +1,11 @@
 ### free mes open source mes Manufacturing Execution System
-### 市面上最好的免费MES，没有任何限制
-## 不要搞错了，这个仓库没有源码，是我们分享出来的免费MES仓库
+# 市面上超级好用的开源MES，支持二开
 ### 技术架构：Springboot2+ VUE3 + Mysql8 + Redis + Minio，也有SpringCloud版本
-### 免费不易，努力坚持！记得 Star，不要白嫖~
+### 开源不易，努力坚持！记得 Star，不要白嫖~
+
+### 目录介绍：
+#### 部署和文档：基于docker的各种部署方式和使用手册
+#### source-code：前、后端源代码
 
 ### 建议安装在Ubuntu Server 22.04服务器上面
 

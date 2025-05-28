@@ -58,7 +58,6 @@ sudo chmod +x /usr/local/bin/docker-compose
 用户名：metaxk  
 密码：111111
 
-## 完整代码包含前端、后端、数据大屏、报表系统
 
 ## DEMO：
 ## 演示账号：

@@ -302,13 +302,20 @@ const handleSubmit = () => {
   if (!ruleFormRef.value) return
   ruleFormRef.value.validate((valid, fields) => {
     if (valid) {
+      const oldOrderCode = props.pmOrderForm.ruleForm.workorderCode
+      if (oldOrderCode.substring(0, 2) !== 'MO') {
+        const newOrderCode = 'MO' + props.pmOrderForm.ruleForm.workorderCode
+        props.pmOrderForm.ruleForm.workorderCode = newOrderCode
+        if (props.pmOrderForm.ruleForm.workorderName === '') {
+          props.pmOrderForm.ruleForm.workorderName = newOrderCode
+        }
+      }
+
       if (!!props.pmOrderForm.ruleForm.id) {
         const params = {
           workorderId: props.pmOrderForm.ruleForm.id,
           ...props.pmOrderForm.ruleForm
         }
-
-        console.log(params)
 
         // 修改
         upDataWorkOrder(params).then((res) => {

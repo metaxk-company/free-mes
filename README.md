@@ -44,25 +44,8 @@
 
 ### 建议安装在Ubuntu Server 22.04服务器上，需要懂技术的哦
 
-### 执行步骤：
-### 1、安装docker
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -  
-apt-get install -y software-properties-common  
-add-apt-repository    "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"  
-apt-get install docker-ce  -y
-### 2、安装docker-compose
-sudo curl -L https://github.com/docker/compose/releases/download/v2.20.2/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose  
-sudo chmod +x /usr/local/bin/docker-compose
-### 3、下载源码后，执行 docker-compose up
-### 4、访问：http://localhost:48081
-用户名：metaxk  
-密码：111111
+## 请自行下载源码编译运行
 
+## 开源版不再提供技术支持
 
-## DEMO：
-## 演示账号：
-https://mesv2.cloudmes.io/
-### 账号：test001   密码：123456
-### 账号：test002   密码：123456
-
-## 联系我们：17898898894
+## 商业版请联系我们：17898898894

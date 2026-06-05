@@ -179,7 +179,7 @@ service.interceptors.response.use(
           t('sys.api.errMsg901') +
           '</div>' +
           '<div> &nbsp; </div>' +
-          '<div>参考 https://www.metaxk.io/ 教程</div>' +
+          '<div>参考 耘湖科技官网  教程</div>' +
           '<div> &nbsp; </div>' +
           '<div>5 分钟搭建MES本地环境</div>'
       })

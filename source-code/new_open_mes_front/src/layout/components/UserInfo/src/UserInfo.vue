@@ -45,7 +45,7 @@ const toProfile = async () => {
   push('/user/profile')
 }
 const toDocument = () => {
-  window.open('https://www.metaxk.io/')
+  window.open('')
 }
 </script>
 

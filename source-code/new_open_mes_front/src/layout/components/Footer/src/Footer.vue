@@ -17,7 +17,7 @@ const title = computed(() => appStore.getTitle)
     :class="prefixCls"
     class="text-center text-[var(--el-text-color-placeholder)] bg-[var(--app-contnet-bg-color)] h-[var(--app-footer-height)] leading-[var(--app-footer-height)] dark:bg-[var(--el-bg-color)]"
   >
-    <a href="https://www.metaxk.vip">
+    <a href="">
       <p style="font-size: 14px">Copyright ©{{ dateForYear }} - {{ title }}</p>
     </a>
   </div>
